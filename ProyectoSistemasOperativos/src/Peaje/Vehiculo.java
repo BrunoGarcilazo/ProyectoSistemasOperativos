@@ -1,13 +1,18 @@
+package Peaje;
+
+import RapiPago.*;
+
 public class Vehiculo extends Thread {
     
 	private String matricula;   // Identificador del Vehiculo
-	private String tipo;        // Auto, camion, ambulancia, bus, etc.
+	private int tipo;        // Auto, camion, ambulancia, bus, etc.
 	private String marca;       // Marca del Vehiculo
 	private String modelo;      // Modelo del Vehiculo
 	private String color;       // Color del  Vehiculo
+	private Cliente clientePago;// Cliente de RapiPago (sticker en el parabrisas).
 
 
-	public Vehiculo(String matricula, String tipo, String modelo, String color) {
+	public Vehiculo(String matricula, int tipo, String modelo, String color) {
 		this.matricula = matricula;
 		this.tipo = tipo;
 		this.modelo = modelo;
@@ -19,7 +24,7 @@ public class Vehiculo extends Thread {
 		return matricula;
 	}
 
-	public String getTipoVehiculo() {
+	public int getTipoVehiculo() {
 		return tipo;
 	}
 
@@ -33,6 +38,10 @@ public class Vehiculo extends Thread {
 
 	public String getColor() {
 		return color;
+	}
+
+	public Cliente getInformacionPago(){
+		return this.clientePago;
 	}
 
 
