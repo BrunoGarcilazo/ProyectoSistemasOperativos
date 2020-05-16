@@ -9,23 +9,11 @@ package RapiPago;
 
 public class Cliente {
 
-    /** Numero de contacto del Cliente */
-    private int numeroTelefono;
-
-    /** Saldo restante del Cliente */
-    private int saldo;
-                     
-    /** Matricula del vehiculo. Sera util para verificar
-        que el sticker en el vehiculo se correspondan. */
-    private String matricula;             
-    
-    /** C.I del Cliente */
-    private int ci;  
-
-    /**
-     * Monto de las Multas
-     */
-    private int multas;
+    private int numeroTelefono; /** Numero de contacto del Cliente */
+    private int saldo; /** Saldo restante del Cliente */
+    private String matricula;  /** Matricula del vehiculo. Sera util para verificar que el sticker en el vehiculo se correspondan. */            
+    private int ci;   /** C.I del Cliente */
+    private int multas; //Monto de las multas
 
     public Cliente(int telefono,int saldo,String matricula,int ci){
         this.numeroTelefono = telefono;
@@ -55,7 +43,4 @@ public class Cliente {
     public void meMultan(){
         this.multas += 2000;
     }
-
-    
-
 }

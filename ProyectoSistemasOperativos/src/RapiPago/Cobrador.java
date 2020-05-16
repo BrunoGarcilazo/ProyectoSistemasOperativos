@@ -10,13 +10,9 @@ import Peaje.*;
  * (dejar transitar o sacar foto y notificar a las autoridades, por ejemplo).
  */
 
-public class Cobrador extends Thread {
+public class Cobrador {
     
-    private Cabina cabina;
 
-    public Cobrador(Cabina cabina){
-        this.cabina = cabina;
-    }
 
 	public boolean cobrarACliente(Vehiculo cliente,int tarifa) {
 
@@ -32,8 +28,5 @@ public class Cobrador extends Thread {
         infractor.getInformacionPago().meMultan(); // Se le aplica multa de 2000 pesos.
     }
     
-	@Override
-    public void run(){
-        
-	}
+	
 }
