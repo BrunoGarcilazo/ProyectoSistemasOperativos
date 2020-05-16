@@ -1,8 +1,10 @@
+package Peaje;
+
 public class Semaforo {
 
 	private int valor = 1;
-	
-	synchronized void decrementar() {
+
+	synchronized void decrementar(){
 		while (valor <= 0) {
 			try {
 				wait();
@@ -15,6 +17,10 @@ public class Semaforo {
 	synchronized void incrementa() {
 		valor++;
 		notify();
+	}
+
+	public Semaforo(){
+
 	}
 
 }

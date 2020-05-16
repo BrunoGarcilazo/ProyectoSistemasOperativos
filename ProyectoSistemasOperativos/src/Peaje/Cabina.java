@@ -1,4 +1,5 @@
 package Peaje;
+import java.util.LinkedList;
 import java.util.Queue;
 import RapiPago.*;
 
@@ -11,47 +12,82 @@ public class Cabina extends Thread {
 	private Semaforo cabinaOcupada;  // Si el Punto De Control/Cabina se encuentra ocupada por un vehiculo.
 	private boolean habilitada;		
 	private Cobrador cobrador;
-	public Queue<Vehiculo> esperaDeAutos; // HACER PRIVATE Y GETTER
-	
+	private int id;
+	private Queue<Vehiculo> esperaDeAutos; // autos en espera para entrar a cabina
+	private boolean suspendida; // verifica que el auto se puede poner en la cabina( si no esta cerrada para cambio de sentido)
 
-	public Cabina(Carril carril, boolean haciaMontevideo, boolean habilitada) {
+	public Cabina(Carril carril, boolean haciaMontevideo, boolean habilitada, int id){
 		this.haciaMontevideo = haciaMontevideo;
 		this.enCabina = null;
 		this.cabinaOcupada = new Semaforo();
 		this.habilitada = habilitada;
 		this.cobrador = new Cobrador();
+		this.id = id;
+		this.esperaDeAutos = new LinkedList<Vehiculo>();		
 	}
 
+	public int getID(){
+		return this.id;
+	}
+
+	public boolean getCabinaHabilitada(){
+		return this.habilitada;
+	}
+
+	public boolean getSentido(){
+		return this.haciaMontevideo;
+	}
 	/**
 	 * 
+	 * @return Cola de espera de autos para entrar a la Cabina/Punto de Control
 	 */
+	public Queue<Vehiculo> getEsperaDeAutos(){
+		return this.esperaDeAutos;
+	}
+	
+	public Semaforo getCabinaOcupada(){
+		return this.cabinaOcupada;
+	}
+
+	public Vehiculo getEnCabina(){
+		return this.enCabina;
+	}
+	
+	public void setEnCabina(Vehiculo vehiculo){
+		this.enCabina = vehiculo;
+	}
+
+	public void setCabinaHabilitada(boolean habilitada){
+		this.habilitada = habilitada;
+	}
+
 	@Override
 	public void run() {
 		while (habilitada) {
 			try {
-				if (this.dejarEntrarVehiculo()) {
+				if (this.enCabina != null) {
 					boolean pagoExitoso = false;
 					switch (this.enCabina.getTipoVehiculo()) {
 
 						case 1: //Prioritario
 							pagoExitoso = this.cobrar(this.enCabina, 0);
-							Thread.sleep(0);
+							Thread.sleep(1000);
 
 						case 2: // Automovil
 							pagoExitoso = this.cobrar(this.enCabina, 115);
-							sleep(500);
+							Thread.sleep(5000);
 
 						case 3: // Furgon
 							pagoExitoso = this.cobrar(this.enCabina, 130);
-							sleep(550);
+							Thread.sleep(5500);
 
 						case 4: // Bus
 							pagoExitoso = this.cobrar(this.enCabina, 150);
-							sleep(1000);
+							Thread.sleep(10000);
 
 						case 5: //Camión
 							pagoExitoso = this.cobrar(this.enCabina, 180);
-							sleep(1500);
+							Thread.sleep(15000);
 
 						default:
 							System.out.println("Es un UFO");
@@ -71,9 +107,10 @@ public class Cabina extends Thread {
 						System.out.println(
 								"El vehiculo matricula " + enCabina.getMatricula() + " se dirige hacia el Este");
 					}
-					this.enCabina = null; // El vehiculo abandona el Punto de Control/Cabina.
-					this.cabinaOcupada = false; // Se vacia el Punto de Control/Cabina.
-
+					this.cabinaOcupada.incrementa();
+					this.enCabina.setCabina(null); // Se settea null la cabina del auto.
+					this.enCabina = null; // El vehiculo abandona el Punto de Control/Cabina.		
+					
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -81,51 +118,30 @@ public class Cabina extends Thread {
 		}
 	}
 
-
-	/**
-	 * 
-	 * @return
-	 */
-	public Semaforo getCabinaOcupada(){
-		return this.cabinaOcupada;
-	}
-	/**
-	 * Si no hay nadie en el Punto de Control
-	 * deja avanzar a un vehiculo que este esperando
-	 * en el carril
-	 * 
-	 * @return true si entro un vehiculo
-	 * 
-	 */
-	private boolean dejarEntrarVehiculo(){		
-		if(!cabinaOcupada){
-			if(!(this.carril.getVehiculos().peek() == null)){
-				this.enCabina = this.carril.getVehiculos().poll(); // Entra al Punto de Control
-				this.cabinaOcupada = true;						   // Se ocupa el Punto de Control
-				return true;
-			}else{
-				return false; // La Cabina no esta ocupada pero no hay vehiculos esperando.
-			}
-		}else{
-			return false; // La Cabina esta ocupada
-		} 
-	}
-
-	private boolean cobrar(Vehiculo vehiculo, int tarifa) {
+	
+	private boolean cobrar(Vehiculo vehiculo, int tarifa){
 
 		boolean resultado = false;
-		if (cabinaOcupada && vehiculo.getMatricula() == enCabina.getMatricula()) {			
+		if (enCabina != null && vehiculo.getMatricula().equals(enCabina.getMatricula())){			
 			resultado = this.cobrador.cobrarACliente(vehiculo,tarifa);
 		}
-
 		if (resultado) {
 			System.out.println("El cobro se ha realizado con exito");
+		}else{
+			System.out.println("El Vehiculo matricula " + vehiculo.getMatricula() + " no pago");
 		}
 		return resultado;
 	}
 
-	// HACER MAÑANA:
-	// EN CABINA VAMOS A TENER QUE VERIFICAR EL COBRO Y LUEGO EN VEHICULO( EN EL RUN) LLAMAMOS A ESTA FUNCION cobrar DE CABINA. SI EL COBRO SE REALIZO
-	//CON EXITO, LE DAMOS A INCREMENTAR Y LO RETIRAMOS DE LA Queue.
+	public boolean meterEnCabina(Vehiculo vehiculo){
+		if(this.enCabina == null){
+			this.enCabina = vehiculo;
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+
 }
 

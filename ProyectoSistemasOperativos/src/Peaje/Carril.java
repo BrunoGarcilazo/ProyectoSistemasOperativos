@@ -2,11 +2,10 @@ package Peaje;
 
 import java.util.Queue;
 
-public class Carril extends Thread {
+public class Carril{
 
     private Queue<Vehiculo> vehiculos;
 	private Cabina cabina; //Cabina única asignada al carril.
-
 
     public Carril(){
 		this.vehiculos = null; // ver como instanciar una cola
