@@ -8,6 +8,8 @@ public class Peaje extends Thread {
 	private String ubicacion;
 	private Vector<Cabina> cabinas; // LinkedHashMap: Pares, orden de insercion
 	private Vector<Carril> carriles;
+	private Monitor monitorEste;
+	private Monitor monitorOeste;
 	//    private Logger logger;
 
 	public Peaje(String ubicacion) {
@@ -17,36 +19,21 @@ public class Peaje extends Thread {
 		//            this.logger = logger;
 	}
 
-	public Vector<Carril> getCarriles() {
+	public Vector<Carril> getCarriles(){
 		return this.carriles;
 	}
 
-	public Vector<Cabina> getCabinas() {
+	public Vector<Cabina> getCabinas(){
 		return this.cabinas;
 	}
 
-
-	
-	
-	/**
-	 * listaDeCabinas: Encuentra las cabinas que estan habilitadas y tienen el mismo sentido que un vehiculo y las agrega a una linkedHashMap
-	 * @return lista de cabinas con un mismo sentido.
-	 */
-	public Vector<Cabina> listaDeCabinas(Vehiculo vehiculo) {
-
-		Vector<Cabina> cabinasConUnMismoSentido = new Vector<>();
-
-		for (Cabina cabina : this.cabinas) {
-			if (cabina.getCabinaHabilitada()) {
-				if (vehiculo.getSentido() == cabina.getSentido()) {
-					cabinasConUnMismoSentido.add(cabina);
-				}
-			}
-
-		}
-		return cabinasConUnMismoSentido;
+	public Monitor getMonitorEste(){
+		return this.monitorEste;
 	}
 
+	public Monitor getMonitorOeste(){
+		return this.monitorOeste;
+	}
 	/**
 	 * Metodo que se ejecuta al iniciar el Peaje
 	 * Crea 5 cabinas hacia el Este
@@ -56,7 +43,7 @@ public class Peaje extends Thread {
 
 		for (int i = 1; i <= 5; i++) {
 			Cabina cabina = new Cabina(false, true, i);
-			Carril carril_1 = new Carril(i, cabina);
+			Carril carril_1 = new Carril(i, cabina,true);
 			cabina.setCarril(carril_1);
 
 			this.cabinas.add(cabina);
@@ -66,7 +53,7 @@ public class Peaje extends Thread {
 
 		for (int i = 6; i <= 10; i++) {
 			Cabina cabina2 = new Cabina(false, true, i);
-			Carril carril_2 = new Carril(i, cabina2);
+			Carril carril_2 = new Carril(i, cabina2,true);
 			cabina2.setCarril(carril_2);
 
 			this.cabinas.add(cabina2);
@@ -92,9 +79,38 @@ public class Peaje extends Thread {
 		startCabinas(); // Comienzan a "trabajar" todas las Cabinas.
 
 		while (true) {
-			
+
 		}
 	}
+
+	
+
+
+		/*if (!cabinas.isEmpty()) {
+		    for( Cabina cab : cabinas){
+		    	if (this.haciaMontevideo == cab.getSentido()) {
+				    if (cab.getHabilitada()) {
+						Carril car = buscarCarril(cab.getID());
+					    System.out.println("Cabina numero: "+ cab.getID() + " HABILITADA "+ "Con "+ car.getEsperaDeAutos().size()+ " autos" );
+				    }
+				    else{
+                        System.out.println("Cabina numero: " + cab.getID() + "  NO HABILITADA");
+				    }
+			    }
+		    }*/
+	}
+
+
+	
+
+
+
+
+
+
+
+
+	
 
 	/*
 	public boolean asignarCabina(Vehiculo vehiculo){

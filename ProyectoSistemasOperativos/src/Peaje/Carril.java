@@ -7,11 +7,15 @@ public class Carril{
     private Vector<Vehiculo> esperaDeAutos; // autos en espera para entrar a cabina
 	private Cabina cabina; //Cabina única asignada al carril.
 	private int numeroCarril;
-	private boolean disponible;
+	private Semaforo disponible;
+	private boolean habilitado; 
 
-	public Carril(int numeroCarril, Cabina cabina) {
+
+	public Carril(int numeroCarril, Cabina cabina, boolean habilitado) {
 		this.numeroCarril = numeroCarril;
 		this.esperaDeAutos = new Vector<Vehiculo>();
+		this.habilitado = habilitado;
+
 	}
    
    /**
@@ -21,30 +25,51 @@ public class Carril{
 	public Vector<Vehiculo> getEsperaDeAutos() {
 		return this.esperaDeAutos;
 	}
+
+	public boolean getHabilitado() {
+		return this.habilitado;
+	}
 	
+	public Semaforo getDisponible(){
+		return this.disponible;
+	}
+
 	public int getNumeroCarril() {
 		return this.numeroCarril;
 	}
-
-	public boolean meterEnCabina(Vehiculo vehiculo) {
-		if (this.cabina.getEnCabina() == null) {
-			this.cabina.setEnCabina(vehiculo);
-			return true;
-		} else {
-			return false;
-		}
+	public Cabina getCabina() {
+		return this.cabina;
 	}
 
+	public boolean entrarAlCarril(Vehiculo v){
+		if(v != null){
+			this.esperaDeAutos.add(v);
+			return true;
+		}else{
+			return false;
+		}
+		
+	}
+	
 	public void imprimirCola(){
          for(Vehiculo v : esperaDeAutos){
              System.out.println("Matricula: "+ v.getMatricula());
          }    
-    }
+	}
+
+
+	/**
+	 * Elimina de la lista de ingreso a la Cabina todo Vehiculo que ya haya sido cobrado.
+	 * Idealmente, el Vehiculo que se elimine sera el primero de la lista de espera, ya que este
+	 * sera el que ingrese a la Cabina para seguir su trayecto.
+	 */
 	public void autoYaPaso() { // este metodo elimina el auto de la lista de espera, de la cabina una vez que ya le cobro.
-		if (this.cabina.getEnCabina().getCobrado()) {
-			this.getEsperaDeAutos().remove(this.cabina.getEnCabina());
-			this.cabina.setEnCabina(null); // Se settea null la cabina del auto.
-		}
+		for(Vehiculo c : this.esperaDeAutos){
+			if(c.getCobrado()){
+				this.esperaDeAutos.remove(c);
+				
+			}
+		}		
 	}
 
 } 

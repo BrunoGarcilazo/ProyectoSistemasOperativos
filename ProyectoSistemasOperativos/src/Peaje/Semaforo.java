@@ -9,14 +9,13 @@ public class Semaforo {
             this.valor = 1;
 	}
 	synchronized void decrementar(){
-            while (valor <= 0) {
-		try {
-                    wait();
-                    
-                } catch (InterruptedException e) {
-		}
-            }
-            valor--;
+        while (valor <= 0) {
+		    try {
+                wait();                   
+            } catch (InterruptedException e) {
+		    }
+        }
+        valor--;
 	}
 
 	synchronized void incrementa() {

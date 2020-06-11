@@ -2,6 +2,7 @@ package Peaje;
 
 
 public class Proyecto {
+
     public static void main(String[] args) throws Exception {
 	
 //        Logger logger = new Logger();
@@ -10,27 +11,27 @@ public class Proyecto {
         Peaje pando = new Peaje("Ruta Interbalnearia KM.33");
        
        
-        Vehiculo b1  = new Vehiculo("A1", 2 ,"Ford Fiesta" , "Blanco" , true);
-	Vehiculo b2  = new Vehiculo("A2", 2, "Ford Fiesta", "Blanco", true);
-        Vehiculo b3  = new Vehiculo("A3", 2 ,"Ford Fiesta" , "Blanco" , true);
-        Vehiculo b4  = new Vehiculo("A4", 2 ,"Ford Fiesta" , "Blanco" , true);
-        Vehiculo b5  = new Vehiculo("A5", 2 ,"Ford Fiesta" , "Blanco" , true);
-        Vehiculo b6  = new Vehiculo("A6", 2 ,"Ford Fiesta" , "Blanco" , true);
-        Vehiculo b7  = new Vehiculo("A7", 2 ,"Ford Fiesta" , "Blanco" , true);
-	Vehiculo b8  = new Vehiculo("A8", 2, "Ford Fiesta", "Blanco", true);
-	Vehiculo b9  = new Vehiculo("A9", 2, "Ford Fiesta", "Blanco", true);
-        Vehiculo b10 = new Vehiculo("A10", 2 ,"Ford Fiesta" , "Blanco" , true);
+        Vehiculo b1  = new Vehiculo("A1", 2 ,"Ford Fiesta" , "Blanco" , true,pando);
+	Vehiculo b2  = new Vehiculo("A2", 2, "Ford Fiesta", "Blanco", true,pando);
+        Vehiculo b3  = new Vehiculo("A3", 2 ,"Ford Fiesta" , "Blanco" , true,pando);
+        Vehiculo b4  = new Vehiculo("A4", 2 ,"Ford Fiesta" , "Blanco" , true,pando);
+        Vehiculo b5  = new Vehiculo("A5", 2 ,"Ford Fiesta" , "Blanco" , true,pando);
+        Vehiculo b6  = new Vehiculo("A6", 2 ,"Ford Fiesta" , "Blanco" , true,pando);
+        Vehiculo b7  = new Vehiculo("A7", 2 ,"Ford Fiesta" , "Blanco" , true,pando);
+	Vehiculo b8  = new Vehiculo("A8", 2, "Ford Fiesta", "Blanco", true,pando);
+	Vehiculo b9  = new Vehiculo("A9", 2, "Ford Fiesta", "Blanco", true,pando);
+        Vehiculo b10 = new Vehiculo("A10", 2 ,"Ford Fiesta" , "Blanco" , true,pando);
         			
-        Vehiculo g1  = new Vehiculo("B1", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g2  = new Vehiculo("B2", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g3  = new Vehiculo("B3", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g4  = new Vehiculo("B4", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g5  = new Vehiculo("B5", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g6  = new Vehiculo("B6", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g7  = new Vehiculo("B7", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g8  = new Vehiculo("B8", 2, "Hyundai HB20", "Negro", false);
-        Vehiculo g9  = new Vehiculo("B9", 2, "Hyundai HB20", "Negro", false);
-	Vehiculo g10 = new Vehiculo("B10", 2, "Hyundai HB20", "Negro", false);
+        Vehiculo g1  = new Vehiculo("B1", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g2  = new Vehiculo("B2", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g3  = new Vehiculo("B3", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g4  = new Vehiculo("B4", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g5  = new Vehiculo("B5", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g6  = new Vehiculo("B6", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g7  = new Vehiculo("B7", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g8  = new Vehiculo("B8", 2, "Hyundai HB20", "Negro", false,pando);
+        Vehiculo g9  = new Vehiculo("B9", 2, "Hyundai HB20", "Negro", false,pando);
+	Vehiculo g10 = new Vehiculo("B10", 2, "Hyundai HB20", "Negro", false,pando);
         
         pando.start(); 
 

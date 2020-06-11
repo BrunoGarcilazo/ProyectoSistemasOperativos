@@ -10,7 +10,6 @@ public class Cabina extends Thread {
 	
 	private boolean haciaMontevideo; // Determina el sentido del trafico en el carril/cabina.
 	private Vehiculo enCabina;		 // Vehiculo que se encuentra en el Punto de Control
-	private Semaforo cabinaOcupada;  // Si el Punto De Control/Cabina se encuentra ocupada por un vehiculo.
 	private boolean habilitada;		
 	private Cobrador cobrador;
 	private int id;
@@ -21,7 +20,6 @@ public class Cabina extends Thread {
 	public Cabina(boolean haciaMontevideo, boolean habilitada, int id){
 		this.haciaMontevideo = haciaMontevideo;
 		this.enCabina = null;
-		this.cabinaOcupada = new Semaforo();
 		this.habilitada = habilitada;
 		this.cobrador = new Cobrador();
 		this.id = id;
@@ -40,11 +38,6 @@ public class Cabina extends Thread {
 		return this.haciaMontevideo;
 	}
 	
-	
-	public Semaforo getCabinaOcupada(){
-		return this.cabinaOcupada;
-	}
-
 	public Vehiculo getEnCabina(){
 		return this.enCabina;
 	}
@@ -66,14 +59,17 @@ public class Cabina extends Thread {
 
 	@Override
 	public void run() {
-		Integer aux = this.getID();
             while (habilitada){
 				try {
-					if (!carril.getEsperaDeAutos().isEmpty()){
-						this.carril.meterEnCabina(carril.getEsperaDeAutos().firstElement());
-						if (this.enCabina != null) {
+					if (!carril.getEsperaDeAutos().isEmpty()) {
+						
+						if (this.enCabina == null) {
+							this.setEnCabina(carril.getEsperaDeAutos().firstElement());
+						}										
+						if (this.enCabina != null) {						
 							boolean pagoExitoso = false;
 							switch (this.enCabina.getTipoVehiculo()) {
+
 								case 1: //Prioritario
 									pagoExitoso = this.cobrar(this.enCabina, 0);
 									Thread.sleep(1000);
@@ -116,7 +112,7 @@ public class Cabina extends Thread {
 								System.out.println("El vehiculo matricula " + enCabina.getMatricula()
 										+ " se dirige hacia el Este");
 							}
-							this.cabinaOcupada.incrementa();
+
 							//this.imprimirCola();
 							this.enCabina.setCobrado(true);
 							this.carril.autoYaPaso();
