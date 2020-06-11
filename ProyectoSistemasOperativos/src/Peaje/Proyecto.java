@@ -3,17 +3,22 @@ package Peaje;
 
 public class Proyecto {
     public static void main(String[] args) throws Exception {
-		Peaje pando = new Peaje("Ruta Interbalnearia KM.33");
-
+	
+//        Logger logger = new Logger();
+//        logger.start();
+        
+        Peaje pando = new Peaje("Ruta Interbalnearia KM.33");
+       
+       
         Vehiculo b1  = new Vehiculo("A1", 2 ,"Ford Fiesta" , "Blanco" , true);
-		Vehiculo b2  = new Vehiculo("A2", 2, "Ford Fiesta", "Blanco", true);
+	Vehiculo b2  = new Vehiculo("A2", 2, "Ford Fiesta", "Blanco", true);
         Vehiculo b3  = new Vehiculo("A3", 2 ,"Ford Fiesta" , "Blanco" , true);
         Vehiculo b4  = new Vehiculo("A4", 2 ,"Ford Fiesta" , "Blanco" , true);
         Vehiculo b5  = new Vehiculo("A5", 2 ,"Ford Fiesta" , "Blanco" , true);
         Vehiculo b6  = new Vehiculo("A6", 2 ,"Ford Fiesta" , "Blanco" , true);
         Vehiculo b7  = new Vehiculo("A7", 2 ,"Ford Fiesta" , "Blanco" , true);
-		Vehiculo b8  = new Vehiculo("A8", 2, "Ford Fiesta", "Blanco", true);
-		Vehiculo b9  = new Vehiculo("A9", 2, "Ford Fiesta", "Blanco", true);
+	Vehiculo b8  = new Vehiculo("A8", 2, "Ford Fiesta", "Blanco", true);
+	Vehiculo b9  = new Vehiculo("A9", 2, "Ford Fiesta", "Blanco", true);
         Vehiculo b10 = new Vehiculo("A10", 2 ,"Ford Fiesta" , "Blanco" , true);
         			
         Vehiculo g1  = new Vehiculo("B1", 2, "Hyundai HB20", "Negro", false);
@@ -25,31 +30,9 @@ public class Proyecto {
         Vehiculo g7  = new Vehiculo("B7", 2, "Hyundai HB20", "Negro", false);
         Vehiculo g8  = new Vehiculo("B8", 2, "Hyundai HB20", "Negro", false);
         Vehiculo g9  = new Vehiculo("B9", 2, "Hyundai HB20", "Negro", false);
-		Vehiculo g10 = new Vehiculo("B10", 2, "Hyundai HB20", "Negro", false);
-
-		pando.agregarVehiculo(b1);
-		pando.agregarVehiculo(b2);
-		pando.agregarVehiculo(b3);
-		pando.agregarVehiculo(b4);
-		pando.agregarVehiculo(b5);
-		pando.agregarVehiculo(b6);
-		pando.agregarVehiculo(b7);
-		pando.agregarVehiculo(b8);
-		pando.agregarVehiculo(b9);
-		pando.agregarVehiculo(b10);
-        pando.agregarVehiculo(g1);
-		pando.agregarVehiculo(g2);
-		pando.agregarVehiculo(g3);
-		pando.agregarVehiculo(g4);
-		pando.agregarVehiculo(g5);
-		pando.agregarVehiculo(g6);
-		pando.agregarVehiculo(g7);
-		pando.agregarVehiculo(g8);
-		pando.agregarVehiculo(g9);
-        pando.agregarVehiculo(g10);
+	Vehiculo g10 = new Vehiculo("B10", 2, "Hyundai HB20", "Negro", false);
         
-        pando.start(); // AAAAAAAAAA
-
+        pando.start(); 
 
         try{
             b1.start();		
@@ -62,7 +45,7 @@ public class Proyecto {
             b8.start();	
             b9.start();	
             b10.start();
-   
+
             g1.start();
             g2.start();
             g3.start();
@@ -73,8 +56,7 @@ public class Proyecto {
             g8.start();
             g9.start();
             g10.start();
-        
-        
+
             b1.join();		
             b2.join();	
             b3.join();	
@@ -96,9 +78,10 @@ public class Proyecto {
             g8.join();
             g9.join();
             g10.join();
+            
         } catch(InterruptedException e){
             e.printStackTrace();
         }						
         
-    }
+}
 }

@@ -1,5 +1,4 @@
 package Peaje;
-
 import java.util.Queue;
 import RapiPago.*;
 
@@ -91,7 +90,7 @@ public class Vehiculo extends Thread {
 	
 	public boolean entrarEnCabina(){
 		if(this.cabina != null){
-			if(this.cabina.meterEnCabina(this)){
+			if(this.cabina.getCarril().meterEnCabina(this)){
 				// Vehiculo esta actualmente en la Cabina
 				return true;
 			}else{
@@ -102,28 +101,31 @@ public class Vehiculo extends Thread {
 		}
 	}
 
-
-
 	//Agregar listado de carriles, desarrollar lógica de a qué carril ingresar.
 	@Override
 	public void run(){
-			while (this.cabina == null) {
-				//try {
-					//wait();
-				//} catch (InterruptedException e) {
-				//}
-			}
+		
+		// decirdir si moverse y a donde, verificando el cartel que hay en el peaje.
+		//------------------------------
+
+		// cuando ya decidio a donde moverse:
+		// verifico segun lo que diga el cartel del peaje.
+		// voy a tener varios carriles para ir( verificar a cuales es posible moverme- hacer metodo)
+		// semaforo para saber si puedo entrar o no al carril( verifico el estado del semaforo dentro de carril).
+
 			this.cabina.getCabinaOcupada().decrementar();
 
 			if (entrarEnCabina()){
-				this.cabina.getEsperaDeAutos().poll(); // El Vehiculo sale de la "cola de espera".
 				System.out.println("El vehiculo matricula " + this.matricula + " se encuentra en la cabina");
+
 			}else{
 				// Error: tiene el permiso pero la cabina sigue ocupada
+                 System.out.println("Cabina sigue ocupada.");
 			}
 			while(this.cabina != null){
 				// Espero a que Cabina me desasigne mi Cabina
 			}
+                        
 			System.out.println("El Vehiculo " + this.getMatricula() + " sigue su camino");
 		
 	}

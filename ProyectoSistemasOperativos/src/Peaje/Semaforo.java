@@ -1,26 +1,28 @@
 package Peaje;
 
 public class Semaforo {
+       
 
-	private int valor = 1;
-
+	private int valor ;
+        
+        public Semaforo(){
+            this.valor = 1;
+	}
 	synchronized void decrementar(){
-		while (valor <= 0) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-			}
+            while (valor <= 0) {
+		try {
+                    wait();
+                    
+                } catch (InterruptedException e) {
 		}
-		valor--;
+            }
+            valor--;
 	}
 
 	synchronized void incrementa() {
-		valor++;
-		notify();
+            valor++;
+            notify();
 	}
 
-	public Semaforo(){
-
-	}
-
+	
 }
