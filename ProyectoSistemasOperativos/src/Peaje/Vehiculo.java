@@ -5,7 +5,7 @@ import RapiPago.*;
 public class Vehiculo extends Thread {
 
 	private String matricula; // Identificador del Vehiculo
-	private int tipo; // Auto, camion, ambulancia, bus, etc.
+	private int tipo; // Auto, camion, bus. Cuando tipo = 1 son vehículos prioritarios (emergencias)
 	private String marca; // Marca del Vehiculo
 	private String modelo; // Modelo del Vehiculo
 	private String color; // Color del  Vehiculo
@@ -145,11 +145,23 @@ public class Vehiculo extends Thread {
 		carrilOptimo.getDisponible().incrementa();
 		
 	}
+
+	/*
+	* Método que nos indica si se trata de un vehículo prioritario.
+	*/
+	public boolean es_prioritario(){
+		if (this.tipo == 1){
+			return true;
+		} else{
+			return false; 
+		}
+
+	}
 		
 
 	@Override
 	public void run() {
-		
+		// falta lógica de cuando pasa por sensor y es prioritario
 		Carril carril = this.seleccionarCarril();
 		if(carril != null)  {
 			this.moverseDeCarril(carril);

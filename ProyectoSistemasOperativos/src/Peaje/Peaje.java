@@ -10,12 +10,16 @@ public class Peaje extends Thread {
 	private Vector<Carril> carriles;
 	private Monitor monitorEste;
 	private Monitor monitorOeste;
+	private Sensor desdeMontevideo;
+	private Sensor desdeElEste;
 	//    private Logger logger;
 
 	public Peaje(String ubicacion) {
 		this.ubicacion = ubicacion;
 		this.cabinas = new Vector<>();
 		this.carriles = new Vector<>();
+		this.desdeMontevideo = new Sensor(this,true);
+		this.desdeElEste = new Sensor(this,false);
 		//            this.logger = logger;
 	}
 
@@ -71,6 +75,10 @@ public class Peaje extends Thread {
 		for (Cabina c : this.cabinas) {
 			c.start();
 		}
+	}
+
+	public  vehiculoPrioritarioSeAcerca(Vehiculo vehiculo){
+		//método a desarrollar. esperando respuesta.
 	}
 
 	@Override
