@@ -98,7 +98,7 @@ public class Cabina extends Thread {
 								default:
 									System.out.println("UFO");
 							}
-							if (!pagoExitoso) {
+							if(!pagoExitoso) {
 								this.cobrador.multa(enCabina);
 								System.out.println("El vehiculo matricula " + enCabina.getMatricula()
 										+ " fue multado por falta de saldo.");

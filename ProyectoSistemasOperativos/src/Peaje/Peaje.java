@@ -77,7 +77,7 @@ public class Peaje extends Thread {
 		}
 	}
 
-	public  vehiculoPrioritarioSeAcerca(Vehiculo vehiculo){
+	public void vehiculoPrioritarioSeAcerca(Vehiculo vehiculo){
 		//método a desarrollar. esperando respuesta.
 	}
 

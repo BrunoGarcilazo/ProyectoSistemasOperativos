@@ -12,21 +12,34 @@ import Peaje.*;
 
 public class Cobrador {
     
+public boolean cobrarACliente(Vehiculo cliente,int tarifa) {
+	boolean cobrado = false;
 
-
-	public boolean cobrarACliente(Vehiculo cliente,int tarifa) {
-
+	if (cliente.getMatricula().compareTo(cliente.getInformacionPago().getMatricula()) != 0  || cliente.getMatricula() == null) {
+		this.multa(cliente, 2000);
+		//logger manda que no tiene matricula 
+		// AUTO ROBADO
+	}
+    else{
 		if (cliente.getInformacionPago().getSaldo() >= tarifa) {
-			cliente.getInformacionPago().decrementarSaldo(tarifa);
-			return true;
-		} else {
-			return false;
+			cliente.getInformacionPago().decrementarSaldo(tarifa);// CASO NORMAL
+			cobrado = true;
+			// logger de vehiculo : "Peaje Pando: Tarifa X , Vehiculo Matricula X"
 		}
+        else{
+			this.multa(cliente, tarifa + 250);
+			// logger me multaron: X plata.
+		}
+    }
+     
+      return cobrado;
 	}
 
-	public void multa(Vehiculo infractor){
-        infractor.getInformacionPago().meMultan(); // Se le aplica multa de 2000 pesos.
+	public void multa(Vehiculo infractor, int multa){
+        infractor.getInformacionPago().setMulta(multa); // Se le aplica multa de 2000 pesos.
     }
-    
+			
+
+   
 	
 }

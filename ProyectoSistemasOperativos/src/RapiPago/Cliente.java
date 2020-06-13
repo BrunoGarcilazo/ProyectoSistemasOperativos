@@ -7,7 +7,7 @@ package RapiPago;
  * durante su paso por el Peaje.
  */
 
-public class Cliente {
+public class Cliente { // STICKER QUE TIENE EL VEHICULO
 
     private int numeroTelefono; // Numero de contacto del Cliente 
     private int saldo; //Saldo restante del Cliente
@@ -29,9 +29,14 @@ public class Cliente {
     public int getSaldo(){
         return this.saldo;
     }
-    public String getMatricula(){
-        return this.matricula;
-    }
+
+	public String getMatricula() {
+		return this.matricula;
+	}
+    
+    public void setMultas(int monto){
+		this.multas += monto;
+	}
     public int getCI(){
         return this.ci;
     }
@@ -39,8 +44,7 @@ public class Cliente {
 	public void decrementarSaldo(int tarifa) {
 		this.saldo = this.saldo - tarifa;
     }
-    
-    public void meMultan(){
-        this.multas += 2000;
+    public void setMulta(int monto){
+        this.multas += monto;
     }
 }
