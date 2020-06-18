@@ -62,7 +62,7 @@ public class Peaje extends Thread {
 		}
 
 		for (int i = 6; i <= 10; i++) {
-			Cabina cabina2 = new Cabina(false, true, i);
+			Cabina cabina2 = new Cabina(true, true, i);
 			Carril carril_2 = new Carril(i, cabina2,true);
 			cabina2.setCarril(carril_2);
 

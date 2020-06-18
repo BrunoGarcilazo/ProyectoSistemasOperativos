@@ -97,7 +97,8 @@ public class Vehiculo extends Thread {
 	 * Se determinara cual es este Carril Optimo segun la cantidad de Vehiculos
 	 * en los Carriles disponibles.
 	 */
-	private Carril seleccionarCarril(){
+	private Carril seleccionarCarrilHaciaMontevideo(){
+
 		Carril carrilOptimo = null;
 		if (haciaMontevideo){
 			Monitor monitor = this.peaje.getMonitorEste();
@@ -115,13 +116,18 @@ public class Vehiculo extends Thread {
 
 			}
 
-		} else {
+		}
+		return carrilOptimo;
+	} 
+		
+	private Carril seleccionarCarrilHaciaEste(){	
+			Carril carrilOptimo = null;	
 			Monitor monitor = this.peaje.getMonitorOeste();
 			for (Carril c : monitor.getCarriles()) {
 				if(c.getCabina()==null){
 					System.out.println("EL CARRIL NO TIENE CABINA");
 				}
-				if (c.getHabilitado() && c.getCabina().getSentido() == this.haciaMontevideo
+				if (c.getHabilitado() && c.getCabina().getSentido() == false
 						&& c.getCabina().getHabilitada()) {
 					if (carrilOptimo == null) {
 						carrilOptimo = c;
@@ -132,9 +138,10 @@ public class Vehiculo extends Thread {
 					}
 				}
 			}
+			return carrilOptimo;
 		}
-		return carrilOptimo;
-	}
+		
+		
 	/**
 	 *  
 	 */
@@ -175,7 +182,13 @@ public class Vehiculo extends Thread {
 			e.printStackTrace();
 		}	
 		// falta lógica de cuando pasa por sensor y es prioritario
-		Carril carril = this.seleccionarCarril();
+		
+		Carril carril = null;
+		if(haciaMontevideo){
+			carril = this.seleccionarCarrilHaciaMontevideo();
+		}else{
+			carril = this.seleccionarCarrilHaciaEste();
+		}
 		if(carril != null)  {
 			this.moverseDeCarril(carril);
 		}

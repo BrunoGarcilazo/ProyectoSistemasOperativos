@@ -28,7 +28,7 @@ public class Monitor {
 
 	
 	public void imprimir() {
-		if (!carriles.isEmpty()) {
+		if (!carriles.isEmpty()){
 			for (Carril carril : carriles) {
 				if (carril.getCabina() != null) {
 					if (this.haciaMontevideo == carril.getCabina().getSentido()) {
