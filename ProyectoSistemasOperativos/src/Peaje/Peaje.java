@@ -12,15 +12,17 @@ public class Peaje extends Thread {
 	private Monitor monitorOeste;
 	private Sensor desdeMontevideo;
 	private Sensor desdeElEste;
-	//    private Logger logger;
+	private Logger logger;
 
 	public Peaje(String ubicacion) {
 		this.ubicacion = ubicacion;
 		this.cabinas = new Vector<>();
 		this.carriles = new Vector<>();
-		this.desdeMontevideo = new Sensor(this,true);
-		this.desdeElEste = new Sensor(this,false);
-		//            this.logger = logger;
+		this.desdeMontevideo = new Sensor(true,this);
+		this.desdeElEste = new Sensor(true,this);
+		this.monitorEste = new Monitor(true);
+		this.monitorOeste = new Monitor(false);
+		this.logger = new Logger(true,false,false);
 	}
 
 	public Vector<Carril> getCarriles(){
@@ -40,10 +42,11 @@ public class Peaje extends Thread {
 	}
 	/**
 	 * Metodo que se ejecuta al iniciar el Peaje
-	 * Crea 5 cabinas hacia el Este
-	 * Crea 5 cabinas hacia el Oeste
+	 * Crea 5 cabinas hacia el Este y sus Carriles
+	 * Crea 5 cabinas hacia el Oeste y sus Carriles
+	 * Acondiciona los Monitores
 	 */
-	public void crearCabinasYCarriles() {
+	private void crearCabinasYCarriles() {
 
 		for (int i = 1; i <= 5; i++) {
 			Cabina cabina = new Cabina(false, true, i);
@@ -51,7 +54,7 @@ public class Peaje extends Thread {
 			cabina.setCarril(carril_1);
 
 			this.cabinas.add(cabina);
-			this.carriles.add(carril_1);
+			this.carriles.add(carril_1);			
 			// Crea 5 Cabinas con su Carril, con direccion al Este. Habilitadas por defecto.
 		}
 
@@ -64,6 +67,10 @@ public class Peaje extends Thread {
 			this.carriles.add(carril_2);
 			// Crea 5 Cabinas con su Carril, con direccion al Oeste. Habilitadas por defecto.            
 		}
+		
+		//Acondiciono Monitor Oeste (haciaMontevideo)
+		this.monitorOeste.setCarriles(this.carriles);
+		
 
 	}
 

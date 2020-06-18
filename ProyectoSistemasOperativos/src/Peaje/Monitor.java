@@ -8,12 +8,18 @@ public class Monitor {
 	private Vector<Carril> carriles;
 	
 
+
+
 	public Monitor(boolean haciaMontevideo) {
 		this.haciaMontevideo = haciaMontevideo;
 	}
 
 	public Vector<Carril> getCarriles(){
 		return this.carriles;
+	}
+	
+	public void setCarriles(Vector<Carril> carriles){
+		this.carriles = carriles;
 	}
 
 	public boolean getSentido() {
