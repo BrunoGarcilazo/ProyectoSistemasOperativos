@@ -13,11 +13,13 @@ public class Logger extends Thread {
     private LinkedHashMap<Integer,LinkedList<String>> datosClientes = new LinkedHashMap<Integer,LinkedList<String>>();   //<cedula,datos>
     private boolean cabinaLogger;   // Indica si este Logger es encargado de escribir datos sobre Cabinas
     private boolean camineraLogger; // IDEM con Caminera
-    private boolean clientesLogger; // IDEM con Clientes 
+	private boolean clientesLogger; // IDEM con Clientes 
+    
     public Logger(boolean cabinaLogger,boolean camineraLogger,boolean clientesLogger){
         this.cabinaLogger = cabinaLogger;
         this.camineraLogger = camineraLogger;
-        this.clientesLogger = clientesLogger;
+		this.clientesLogger = clientesLogger;
+        
         //Inicializa datosCabinas
         for (int i = 1; i <= 10; i++){
             Integer aux = i;
@@ -64,7 +66,7 @@ public class Logger extends Thread {
     @Override
     public void run()  {
 	    try  {
-	    Thread.sleep(20000); // Exporta los datos cada 20s
+	    Thread.sleep(30000); // Exporta los datos cada 20s
 	    }  catch  (InterruptedException e){
 	        e.printStackTrace();
         }

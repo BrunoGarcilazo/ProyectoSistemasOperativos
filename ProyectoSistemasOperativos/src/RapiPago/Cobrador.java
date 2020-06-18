@@ -21,33 +21,47 @@ public class Cobrador {
 public boolean cobrarACliente(Vehiculo cliente,int tarifa) {
 	boolean cobrado = false;
 
-	if (cliente.getMatricula().compareTo(cliente.getInformacionPago().getMatricula()) != 0  || cliente.getMatricula() == null) {
+	if (cliente.getMatricula().compareTo(cliente.getInformacionPago().getMatricula()) != 0 || cliente.getMatricula() == null) {
 		this.multa(cliente, 2000);
-		logger.logCliente(cliente.getInformacionPago().getCI(),"Tu vehiculo paso por el Peaje con informacion irregular");
-		if(cliente.getSentido()){ // Se dirige hacia Montevideo. Corresponde Caminera Oeste.
-			if(cliente.getMatricula() == null){ // Si no tiene matricula, informo solo el Modelo y Color
-				logger.logCaminera(true,"ALERTA: "+cliente.getModelo()+" / Color: "+cliente.getColor()+ " irregular se dirige hacia su direccion");
-			}else{ // Si tiene matricula, informo tambien la matricula.
-				logger.logCaminera(true,"ALERTA: "+cliente.getModelo()+" / Color: "+cliente.getColor()+" Matricula:"+cliente.getMatricula()+
-					" irregular se dirige hacia su direccion");
-			}						
-		}else{ // Se dirige hasta el Este
-			if(cliente.getMatricula() == null){ // Si no tiene matricula, solo informo el Modelo y Color
-				logger.logCaminera(false,"ALERTA: "+cliente.getModelo()+" / Color: "+cliente.getColor()+ " irregular se dirige hacia su direccion");
-			}else{ // Si tiene matircula, informo tambien la matricula.
-				logger.logCaminera(false,"ALERTA: "+cliente.getModelo()+" / Color: "+cliente.getColor()+" Matricula:"+cliente.getMatricula()+
-					" irregular se dirige hacia su direccion");
+		logger.logCliente(cliente.getInformacionPago().getCI(), "Tu vehiculo paso por el Peaje con informacion irregular");
+
+		if (cliente.getSentido()) { // Se dirige hacia Montevideo. Corresponde Caminera Oeste.
+
+			if (cliente.getMatricula() == null) { // Si no tiene matricula, informo solo el Modelo y Color
+				logger.logCaminera(true, "ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
+						+ " irregular se dirige hacia su direccion");
+
+			} else { // Si tiene matricula, informo tambien la matricula.
+				logger.logCaminera(true, "  ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
+						+ " Matricula:" + cliente.getMatricula() + " irregular se dirige hacia su direccion");
 			}
-		}			
+		} else { // Se dirige hasta el Este
+
+			if (cliente.getMatricula() == null) { // Si no tiene matricula, solo informo el Modelo y Color
+				logger.logCaminera(false, "ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
+						+ " irregular se dirige hacia su direccion");
+
+			} else { // Si tiene matircula, informo tambien la matricula.
+				logger.logCaminera(false, "ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
+						+ " Matricula:" + cliente.getMatricula() + " irregular se dirige hacia su direccion");
+			}
+		}
 	}
-    else{
-		if (cliente.getInformacionPago().getSaldo() >= tarifa) {
+    
+	else {
+		
+		if (cliente.getInformacionPago().getSaldo() >= tarifa) { //si se puede cobrar
 			cliente.getInformacionPago().decrementarSaldo(tarifa);// CASO NORMAL
+
 			cobrado = true;
+			logger.logCliente(cliente.getInformacionPago().getCI(), "Peaje Pando: Tarifa $" +tarifa+" , Vehiculo Matricula " + cliente.getInformacionPago().getMatricula()+" / Saldo Restante: $"+cliente.getInformacionPago().getSaldo());
 			// logger de vehiculo : "Peaje Pando: Tarifa X , Vehiculo Matricula X"
 		}
-        else{
-			this.multa(cliente, tarifa + 250);
+		 
+		else{ // si no tiene dinero suficiente
+			Integer multatotal= tarifa + 250;
+			this.multa(cliente, multatotal);
+			logger.logCliente(cliente.getInformacionPago().getCI(),"Peaje Pando: Saldo Insuficiente, Multa por $"+multatotal.toString());
 			// logger me multaron: X plata.
 		}
     }

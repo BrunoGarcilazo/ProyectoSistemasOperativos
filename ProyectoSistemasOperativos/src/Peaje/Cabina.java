@@ -102,6 +102,7 @@ public class Cabina extends Thread {
 								default:
 									System.out.println("UFO");
 							}
+														
 							if(!pagoExitoso) {
 								this.cobrador.multa(enCabina,500);
 								this.logger.logCabina(this.id, "El vehiculo matricula " + enCabina.getMatricula()
@@ -110,6 +111,7 @@ public class Cabina extends Thread {
 							} else {
 								System.out.println(
 										"El pago de la matricula " + enCabina.getMatricula() + " se realizó con éxito");
+
 							}
 							if (this.haciaMontevideo) {
 								this.logger.logCabina(this.id, "El vehiculo matricula " + enCabina.getMatricula()
@@ -124,9 +126,9 @@ public class Cabina extends Thread {
 							//this.imprimirCola();
 							this.enCabina.setCobrado(true);
 							this.carril.getSemListaEspera().decrementar();
-							//this.carril.autoYaPaso();
 							this.carril.getSemListaEspera().incrementa();
-							this.carril.getEsperaDeAutos().remove(0);
+							this.carril.getEsperaDeAutos().remove(enCabina);
+                                                        this.setEnCabina(null);
 						}
 					}
 				} 
