@@ -59,7 +59,9 @@ public boolean cobrarACliente(Vehiculo cliente,int tarifa) {
         infractor.getInformacionPago().setMulta(multa); // Se le aplica multa de 2000 pesos.
     }
 			
-
+	public void empezarLogger(){
+		this.logger.start();
+	}
    
 	
 }

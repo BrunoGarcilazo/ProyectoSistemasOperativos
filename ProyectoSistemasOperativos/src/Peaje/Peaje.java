@@ -2,6 +2,7 @@ package Peaje;
 
 
 import java.util.Vector;
+import java.util.Collections;
 
 public class Peaje extends Thread {
 
@@ -23,6 +24,8 @@ public class Peaje extends Thread {
 		this.monitorEste = new Monitor(true);
 		this.monitorOeste = new Monitor(false);
 		this.logger = new Logger(true,false,false);
+
+		crearCabinasYCarriles();
 	}
 
 	public Vector<Carril> getCarriles(){
@@ -46,7 +49,7 @@ public class Peaje extends Thread {
 	 * Crea 5 cabinas hacia el Oeste y sus Carriles
 	 * Acondiciona los Monitores
 	 */
-	private void crearCabinasYCarriles() {
+	private void crearCabinasYCarriles(){
 
 		for (int i = 1; i <= 5; i++) {
 			Cabina cabina = new Cabina(false, true, i);
@@ -68,8 +71,16 @@ public class Peaje extends Thread {
 			// Crea 5 Cabinas con su Carril, con direccion al Oeste. Habilitadas por defecto.            
 		}
 		
-		//Acondiciono Monitor Oeste (haciaMontevideo)
+		//Acondiciono Monitor Oeste (haciaMontevideo) 1,2,3,...10
 		this.monitorOeste.setCarriles(this.carriles);
+
+		//Acondiciono Monitor Este (!haciaMontevideo) 10,9,8...1
+		Vector<Carril> aux = this.carriles;
+		Collections.reverse(aux);
+		this.monitorEste.setCarriles(aux);
+
+		this.monitorEste.imprimir();
+		this.monitorOeste.imprimir();
 		
 
 	}
@@ -90,7 +101,7 @@ public class Peaje extends Thread {
 
 	@Override
 	public void run() {
-		crearCabinasYCarriles(); // Crea las Cabinas.
+		//crearCabinasYCarriles(); // Crea las Cabinas.
 		startCabinas(); // Comienzan a "trabajar" todas las Cabinas.
 
 		while (true) {
@@ -113,7 +124,7 @@ public class Peaje extends Thread {
 				    }
 			    }
 		    }*/
-	}
+	//}
 
 
 	

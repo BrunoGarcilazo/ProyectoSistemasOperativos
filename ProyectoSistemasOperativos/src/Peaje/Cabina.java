@@ -16,7 +16,8 @@ public class Cabina extends Thread {
 	private int id;
 	private Carril carril;
 	private boolean suspendida; // verifica que el auto se puede poner en la cabina( si no esta cerrada para cambio de sentido)
-
+	private Semaforo puedePasar;
+	private Logger logger = new Logger(true,false,false);
 
 	public Cabina(boolean haciaMontevideo, boolean habilitada, int id){
 		this.haciaMontevideo = haciaMontevideo;
@@ -24,6 +25,9 @@ public class Cabina extends Thread {
 		this.habilitada = habilitada;
 		this.cobrador = new Cobrador();
 		this.id = id;
+		this.puedePasar = new Semaforo();
+		this.cobrador.empezarLogger();
+		logger.start();
 
 	}
 
@@ -99,24 +103,30 @@ public class Cabina extends Thread {
 									System.out.println("UFO");
 							}
 							if(!pagoExitoso) {
-								this.cobrador.multa(enCabina);
-								System.out.println("El vehiculo matricula " + enCabina.getMatricula()
-										+ " fue multado por falta de saldo.");
+								this.cobrador.multa(enCabina,500);
+								this.logger.logCabina(this.id, "El vehiculo matricula " + enCabina.getMatricula()
+								+ " fue multado por falta de saldo.");
+								
 							} else {
 								System.out.println(
 										"El pago de la matricula " + enCabina.getMatricula() + " se realizó con éxito");
 							}
 							if (this.haciaMontevideo) {
-								System.out.println("El vehiculo matricula " + enCabina.getMatricula()
-										+ " se dirige hacia el Oeste");
+								this.logger.logCabina(this.id, "El vehiculo matricula " + enCabina.getMatricula()
+								+ " se dirige hacia el Oeste");
+								
 							} else {
-								System.out.println("El vehiculo matricula " + enCabina.getMatricula()
-										+ " se dirige hacia el Este");
+								this.logger.logCabina(this.id,"El vehiculo matricula " + enCabina.getMatricula()
+								+ " se dirige hacia el Este");
+								
 							}
 
 							//this.imprimirCola();
 							this.enCabina.setCobrado(true);
-							this.carril.autoYaPaso();
+							this.carril.getSemListaEspera().decrementar();
+							//this.carril.autoYaPaso();
+							this.carril.getSemListaEspera().incrementa();
+							this.carril.getEsperaDeAutos().remove(0);
 						}
 					}
 				} 
@@ -129,15 +139,14 @@ public class Cabina extends Thread {
 	
 	
 	private boolean cobrar(Vehiculo vehiculo, int tarifa){
-
 		boolean resultado = false;
 		if (enCabina != null && vehiculo.getMatricula().equals(enCabina.getMatricula())){			
 			resultado = this.cobrador.cobrarACliente(vehiculo,tarifa);
 		}
 		if (resultado) {
-			System.out.println("El cobro se ha realizado con exito del vehiculo matricula:"+ vehiculo.getMatricula());
+			this.logger.logCabina(this.id,"El cobro se ha realizado con exito del vehiculo matricula:"+ vehiculo.getMatricula());			
 		}else{
-			System.out.println("El Vehiculo matricula " + vehiculo.getMatricula() + " no pago");
+			this.logger.logCabina(this.id,"El Vehiculo matricula " + vehiculo.getMatricula() + " no pago");			
 		}
 		return resultado;
 	}

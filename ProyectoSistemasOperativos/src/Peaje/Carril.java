@@ -9,13 +9,16 @@ public class Carril{
 	private int numeroCarril;
 	private Semaforo disponible;
 	private boolean habilitado; 
+	private Semaforo semListaEspera;
 
 
 	public Carril(int numeroCarril, Cabina cabina, boolean habilitado) {
 		this.numeroCarril = numeroCarril;
 		this.esperaDeAutos = new Vector<Vehiculo>();
 		this.habilitado = habilitado;
-
+		this.cabina = cabina;
+		this.disponible = new Semaforo();
+		this.semListaEspera = new Semaforo();
 	}
    
    /**
@@ -40,7 +43,9 @@ public class Carril{
 	public Cabina getCabina() {
 		return this.cabina;
 	}
-
+	public Semaforo getSemListaEspera(){
+		return this.semListaEspera;
+	}
 	public boolean entrarAlCarril(Vehiculo v){
 		if(v != null){
 			this.esperaDeAutos.add(v);

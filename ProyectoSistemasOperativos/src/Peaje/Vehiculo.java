@@ -97,9 +97,9 @@ public class Vehiculo extends Thread {
 	 * Se determinara cual es este Carril Optimo segun la cantidad de Vehiculos
 	 * en los Carriles disponibles.
 	 */
-	private Carril seleccionarCarril() {
+	private Carril seleccionarCarril(){
 		Carril carrilOptimo = null;
-		if (haciaMontevideo) {
+		if (haciaMontevideo){
 			Monitor monitor = this.peaje.getMonitorEste();
 			for (Carril c : monitor.getCarriles()) {
 				if (c.getHabilitado() && c.getCabina().getSentido() == this.haciaMontevideo
@@ -118,6 +118,9 @@ public class Vehiculo extends Thread {
 		} else {
 			Monitor monitor = this.peaje.getMonitorOeste();
 			for (Carril c : monitor.getCarriles()) {
+				if(c.getCabina()==null){
+					System.out.println("EL CARRIL NO TIENE CABINA");
+				}
 				if (c.getHabilitado() && c.getCabina().getSentido() == this.haciaMontevideo
 						&& c.getCabina().getHabilitada()) {
 					if (carrilOptimo == null) {
@@ -136,12 +139,16 @@ public class Vehiculo extends Thread {
 	 *  
 	 */
 	public void moverseDeCarril(Carril carrilOptimo){
-
+		if(carrilOptimo == null){
+			System.out.println("CARRIL OPTIMO ES NULO");
+		}
 		carrilOptimo.getDisponible().decrementar();
+		///carrilOptimo.getSemListaEspera().decrementar();
 		if(carrilOptimo.entrarAlCarril(this)){
 			System.out.println("Vehiculo " + this.getId() + " entra al Carril " + carrilOptimo.getNumeroCarril());
 			// Logear en Vehiculo y Carril con clase Logger.
 		}
+		//carrilOptimo.getSemListaEspera().incrementa();
 		carrilOptimo.getDisponible().incrementa();
 		
 	}
@@ -161,6 +168,12 @@ public class Vehiculo extends Thread {
 
 	@Override
 	public void run() {
+		System.out.println("Vehiculo "+this.matricula+" inicia");
+		try{
+			Thread.sleep(1000);
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		}	
 		// falta lógica de cuando pasa por sensor y es prioritario
 		Carril carril = this.seleccionarCarril();
 		if(carril != null)  {
