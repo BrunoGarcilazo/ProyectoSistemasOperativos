@@ -1,6 +1,4 @@
 package Peaje;
-
-
 import java.util.Vector;
 import java.util.Collections;
 
@@ -11,16 +9,16 @@ public class Peaje extends Thread {
 	private Vector<Carril> carriles;
 	private Monitor monitorEste;
 	private Monitor monitorOeste;
-	private Sensor desdeMontevideo;
-	private Sensor desdeElEste;
+	public Sensor haciaMontevideo;
+	public Sensor haciaElEste;
 	private Logger logger;
 
 	public Peaje(String ubicacion) {
 		this.ubicacion = ubicacion;
 		this.cabinas = new Vector<>();
 		this.carriles = new Vector<>();
-		this.desdeMontevideo = new Sensor(true,this);
-		this.desdeElEste = new Sensor(true,this);
+		this.haciaMontevideo = new Sensor(true,this);
+		this.haciaElEste = new Sensor(true,this);
 		this.monitorEste = new Monitor(true);
 		this.monitorOeste = new Monitor(false);
 		this.logger = new Logger(true,false,false);
@@ -28,6 +26,14 @@ public class Peaje extends Thread {
 		crearCabinasYCarriles();
 	}
 
+	public Sensor getSensorHaciaMontevideo(){
+		return this.haciaMontevideo;
+	}
+
+	public Sensor getSensorHaciaEste(){
+		return this.haciaElEste;
+	}
+	
 	public Vector<Carril> getCarriles(){
 		return this.carriles;
 	}
@@ -94,11 +100,62 @@ public class Peaje extends Thread {
 			c.start();
 		}
 	}
+	/**
+	 * Metodo que invierte el Sentido de un Carril
+	 * 1ro. Deshabilita entrada para nuevos Vehiculos
+	 * 2do. Deshabilita Cabina
+	 * 3ro. Espera a que no haya mas nadie en el Carril ni en la Cabina
+	 * 4ro. Invierte el Sentido
+	 * 5to. Vuelve a habilitar todo para los vehiculos entrantes en el nuevo sentido
+	 */
+	public void invertirSentidoCarril(int id){
+		Carril carril = null;
+		boolean sentido;
+		for(Carril c : this.carriles){
+			if(c.getNumeroCarril() == id){
+				carril = c;
 
-	public void vehiculoPrioritarioSeAcerca(Vehiculo vehiculo){
-		//método a desarrollar. esperando respuesta.
+			}
+		}
+		if(carril != null){
+			sentido = carril.getCabina().getSentido();
+			carril.setHabilitado(false);
+			carril.getCabina().setHabilitada(false);
+			while(carril.getEsperaDeAutos().size() != 0 && carril.getCabina().getEnCabina() == null){
+				// Espero a que se vacie el carril, que los vehiculos que ya estaban en la lista de espera pasen.
+			}
+			carril.getCabina().setSentido(!sentido);
+			carril.getCabina().setHabilitada(true);
+			carril.setHabilitado(true);
+
+		}
 	}
 
+/*
+	SEGUIR PENSANDO LOGICA VEHICULOS PRIORITARIOS:
+
+	public void vehiculoPrioritarioSeAcerca(Vehiculo vehiculo) {
+		if(vehiculo != null && vehiculo.getTipoVehiculo()==1){
+			Carril carrilElegido = null;
+			if(vehiculo.getSentido()){
+				carrilElegido = vehiculo.seleccionarCarrilHaciaEste();						
+			}else{
+			carrilElegido = vehiculo.seleccionarCarrilHaciaMontevideo();
+			//tengo que hacer q se vacie
+			}
+
+			if (carrilElegido != null) {
+				
+				carrilElegido.setHabilitado(false);
+				carrilElegido.
+			}else{
+				return; // falsa alarma bois
+			}
+
+		}
+
+	}
+*/
 	@Override
 	public void run() {
 		//crearCabinasYCarriles(); // Crea las Cabinas.

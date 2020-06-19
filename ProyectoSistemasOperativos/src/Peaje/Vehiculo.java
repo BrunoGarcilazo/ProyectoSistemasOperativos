@@ -1,4 +1,5 @@
 package Peaje;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Queue;
 import RapiPago.*;
 
@@ -15,7 +16,7 @@ public class Vehiculo extends Thread {
 	private boolean cobrado; // Indica si el auto ya paso por el Peaje.
 	private Peaje peaje;
 
-	public Vehiculo(String matricula, int tipo, String modelo, String color, boolean haciaMontevideo, Peaje peaje) {
+	public Vehiculo(String matricula, int tipo, String modelo, String color, boolean haciaMontevideo, Peaje peaje,int numeroTelefono,int saldo,int ci){
 		this.matricula = matricula;
 		this.tipo = tipo;
 		this.modelo = modelo;
@@ -23,7 +24,7 @@ public class Vehiculo extends Thread {
 		this.haciaMontevideo = haciaMontevideo;
 		this.cabina = null;
 		this.cobrado = false;
-		this.clientePago = new Cliente(99123789, 500, matricula, 56709086);
+		this.clientePago = new Cliente(numeroTelefono, saldo, matricula, ci);
 		this.peaje = peaje;
 	}
 
@@ -97,11 +98,18 @@ public class Vehiculo extends Thread {
 	 * Se determinara cual es este Carril Optimo segun la cantidad de Vehiculos
 	 * en los Carriles disponibles.
 	 */
-	private Carril seleccionarCarrilHaciaMontevideo(){
+	public Carril seleccionarCarrilHaciaMontevideo(){
 
 		Carril carrilOptimo = null;
-		if (haciaMontevideo){
-			Monitor monitor = this.peaje.getMonitorEste();
+		Monitor monitor = this.peaje.getMonitorEste();
+		
+		if(this.getTipoVehiculo() == 5 || this.getTipoVehiculo() == 4){
+			for(Carril c : monitor.getCarriles()){
+				if(c.getNumeroCarril() == 1){
+					carrilOptimo = c;
+				}
+			}
+		}else{					
 			for (Carril c : monitor.getCarriles()) {
 				if (c.getHabilitado() && c.getCabina().getSentido() == this.haciaMontevideo
 						&& c.getCabina().getHabilitada()) {
@@ -114,21 +122,27 @@ public class Vehiculo extends Thread {
 					}
 				}
 
-			}
-
-		}
+			}	
+		}	
 		return carrilOptimo;
 	} 
 		
-	private Carril seleccionarCarrilHaciaEste(){	
-			Carril carrilOptimo = null;	
-			Monitor monitor = this.peaje.getMonitorOeste();
+	public Carril seleccionarCarrilHaciaEste(){	
+		Carril carrilOptimo = null;
+		Monitor monitor = this.peaje.getMonitorOeste();
+		if (this.getTipoVehiculo() == 5 || this.getTipoVehiculo() == 4 ) { // un bondi y camion
 			for (Carril c : monitor.getCarriles()) {
-				if(c.getCabina()==null){
+				if(c.getNumeroCarril() == 10){
+					carrilOptimo = c;
+				}
+			}
+		}
+		else {
+			for (Carril c : monitor.getCarriles()) {
+				if (c.getCabina() == null) {
 					System.out.println("EL CARRIL NO TIENE CABINA");
 				}
-				if (c.getHabilitado() && c.getCabina().getSentido() == false
-						&& c.getCabina().getHabilitada()) {
+				if (c.getHabilitado() && c.getCabina().getSentido() == false && c.getCabina().getHabilitada()) {
 					if (carrilOptimo == null) {
 						carrilOptimo = c;
 					} else {
@@ -138,6 +152,7 @@ public class Vehiculo extends Thread {
 					}
 				}
 			}
+		}
 			return carrilOptimo;
 		}
 		
@@ -174,13 +189,32 @@ public class Vehiculo extends Thread {
 		
 
 	@Override
-	public void run() {
-		System.out.println("Vehiculo "+this.matricula+" inicia");
+	public void run(){
+
+		System.out.println("Vehiculo "+this.matricula+" se acerca al peaje");
+		//Pasa por el sensor que cuenta la cantidad de vehiculos circulando
+		if (this.getSentido()) {
+			peaje.haciaMontevideo.vehiculoDetectado();
+			System.out.println("pasa por el sensor hacia montevideo");
+		}
+		else {
+			peaje.haciaElEste.vehiculoDetectado();
+			System.out.println("pasa por el sensor hacie el este ");
+		}
+		//Tiempo que demora en llegar a la altura del monitor
 		try{
-			Thread.sleep(1000);
+			Thread.sleep(3000);
 		}catch(InterruptedException e){
 			e.printStackTrace();
 		}	
+		
+		//if (this.es_prioritario()) {
+		//	carrilElegido = peaje.vehiculoPrioritarioSeAcerca(this) // este es el carril a donde va a ir el vehiculo priori.
+		//}
+        // ambulancia toca sensor a 5km
+        // peaje libera un carril
+        // ambulancia viaja al peaje y demora un rato
+        // el carril se desagota y la ambulancia pasa
 		// falta lógica de cuando pasa por sensor y es prioritario
 		
 		Carril carril = null;

@@ -50,9 +50,14 @@ public class Cabina extends Thread {
 	public void setEnCabina(Vehiculo vehiculo){
 		this.enCabina = vehiculo;
 	}
-
+	public void setHabilitada(boolean habilitada){
+		this.habilitada = habilitada;
+	}
 	public void setCarril(Carril carril) {
 		this.carril = carril;
+	}
+	public void setSentido(boolean sentido){
+		this.haciaMontevideo = sentido;
 	}
 	public void setCabinaHabilitada(boolean habilitada){
 		this.habilitada = habilitada;

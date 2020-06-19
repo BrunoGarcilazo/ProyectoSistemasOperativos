@@ -32,6 +32,10 @@ public class Carril{
 	public boolean getHabilitado() {
 		return this.habilitado;
 	}
+
+	public void setHabilitado(boolean habilitado){
+		this.habilitado = habilitado;
+	}
 	
 	public Semaforo getDisponible(){
 		return this.disponible;

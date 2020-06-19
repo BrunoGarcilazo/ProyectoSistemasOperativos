@@ -39,7 +39,6 @@ public class Monitor {
 						} else {
 							System.out.println("Cabina numero: " + carril.getCabina().getID() + "  NO HABILITADA");
 						}
-
 					}
 				}
 			}
