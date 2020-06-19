@@ -76,13 +76,13 @@ public class Cabina extends Thread {
 						if (this.enCabina == null) {
 							this.setEnCabina(carril.getEsperaDeAutos().firstElement());
 						}										
-						if (this.enCabina != null) {						
+						if (this.enCabina != null && this.enCabina.getCobrado() == false){						
 							boolean pagoExitoso = false;
 							switch (this.enCabina.getTipoVehiculo()) {
 
 								case 1: //Prioritario
 									pagoExitoso = this.cobrar(this.enCabina, 0);
-									Thread.sleep(1000);
+									Thread.sleep(500);
 									break;
 
 								case 2: // Automovil
@@ -97,12 +97,12 @@ public class Cabina extends Thread {
 
 								case 4: // Bus
 									pagoExitoso = this.cobrar(this.enCabina, 150);
-									Thread.sleep(10000);
+									Thread.sleep(8000);
 									break;
 
 								case 5: //Camión
 									pagoExitoso = this.cobrar(this.enCabina, 180);
-									Thread.sleep(15000);
+									Thread.sleep(8000);
 									break;
 								default:
 									System.out.println("UFO");
@@ -133,7 +133,12 @@ public class Cabina extends Thread {
 							this.carril.getSemListaEspera().decrementar();
 							this.carril.getSemListaEspera().incrementa();
 							this.carril.getEsperaDeAutos().remove(enCabina);
-                                                        this.setEnCabina(null);
+							
+						}else if(this.enCabina != null && this.enCabina.getCobrado()){
+							this.carril.getEsperaDeAutos().remove(this.enCabina);
+							this.setEnCabina(null);
+
+							
 						}
 					}
 				} 
@@ -141,6 +146,7 @@ public class Cabina extends Thread {
 					e.printStackTrace();
 				}
 			}
+			
 		}
 
 	

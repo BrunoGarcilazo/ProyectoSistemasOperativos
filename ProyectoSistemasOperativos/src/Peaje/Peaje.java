@@ -1,5 +1,6 @@
 package Peaje;
 import java.util.Vector;
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Collections;
 
 public class Peaje extends Thread {
@@ -90,7 +91,53 @@ public class Peaje extends Thread {
 		
 
 	}
+	
+	/**
+	 * Metodo que se ejecuta periodicamente.
+	 * Verifica la cantidad de vehiculos de cada lado del Peaje y
+	 * planifica la distribucion de Cabinas disponibles para cada sentido.
+	 * 
+	 * Ej: 90 vehiculos provenientes del Este y 10 del Oeste,
+	 * 	   el peaje abrira 9 Cabinas hacia Montevideo y 1 hacia el Este
+	 * La cabina 1 y 10 no cambian de sentido ni se deshabilitan nunca.
+	 */
 
+	private void controladorDeCabinas(){
+
+		int cantidadTotalVehiculos = this.haciaElEste.getCantidadTemp() + this.haciaMontevideo.getCantidadTemp();
+		
+		if(cantidadTotalVehiculos > 2 && cantidadTotalVehiculos < 25){
+			// Cierro Cabinas innecesarias
+			// desarrollar apagar todas menos la 1 y la 10
+			// luego se encenderan 2 mas que necesito en este caso.
+			
+
+			// Otorgo permiso para abrir 2 cabinas nuevas
+			int haciaMontevideoRatio = (this.haciaMontevideo.getCantidadTemp()*100)/cantidadTotalVehiculos; // porcentaje de autos que van hacia mdeo
+			int haciaEsteRatio = 100 - haciaMontevideoRatio; 
+
+			if(haciaMontevideoRatio < 60 && haciaMontevideoRatio > 40){
+				// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 10
+				this.invertirSentidoCarril(2, false); // hacia el este
+				this.invertirSentidoCarril(9, true); // hacia el oeste
+				
+			}
+		}
+	}
+	public void apagarCabina(int id){
+		Cabina cabina = null;
+		for(Cabina c : this.cabinas){
+			if(c.getID() == id){
+				cabina = c;
+			}
+		}
+		if(cabina != null){
+			cabina.getCarril().setHabilitado(false);
+			while (cabina.getCarril().getEsperaDeAutos().size() != 0){
+				// Espero a que se vacie el carril, que los vehiculos que ya estaban en la lista de espera pasen.
+			}	
+		}
+	}
 	/**
 	 *  Realiza el Thread.start() de 
 	 *  todas las Cabinas.
@@ -108,28 +155,38 @@ public class Peaje extends Thread {
 	 * 4ro. Invierte el Sentido
 	 * 5to. Vuelve a habilitar todo para los vehiculos entrantes en el nuevo sentido
 	 */
-	public void invertirSentidoCarril(int id){
+	public void invertirSentidoCarril(int id,boolean sentidoDeseado){
 		Carril carril = null;
+		Cabina cabina = null;
 		boolean sentido;
-		for(Carril c : this.carriles){
-			if(c.getNumeroCarril() == id){
+		for (Carril c : this.carriles) {
+			if (c.getNumeroCarril() == id) {
 				carril = c;
-
 			}
 		}
-		if(carril != null){
-			sentido = carril.getCabina().getSentido();
-			carril.setHabilitado(false);
-			carril.getCabina().setHabilitada(false);
-			while(carril.getEsperaDeAutos().size() != 0 && carril.getCabina().getEnCabina() == null){
-				// Espero a que se vacie el carril, que los vehiculos que ya estaban en la lista de espera pasen.
-			}
-			carril.getCabina().setSentido(!sentido);
-			carril.getCabina().setHabilitada(true);
-			carril.setHabilitado(true);
+		if (carril != null){
+			cabina = carril.getCabina();
+			if (cabina.getHabilitada()) { // quiero invertir el sentido.
+				sentido = carril.getCabina().getSentido();
+				if(sentido!= sentidoDeseado){
+					carril.setHabilitado(false);
+					carril.getCabina().setHabilitada(false);
+					while (carril.getEsperaDeAutos().size() != 0) {
+						// Espero a que se vacie el carril, que los vehiculos que ya estaban en la lista de espera pasen.
+					}		
+					carril.getCabina().setSentido(sentidoDeseado);
+					carril.getCabina().setHabilitada(true);
+					carril.setHabilitado(true);
 
+				}	
+			}else{ // habilito la cabina en el sentido deseado.
+					carril.getCabina().setSentido(sentidoDeseado);
+					carril.getCabina().setHabilitada(true);
+					carril.setHabilitado(true);
+			}
 		}
 	}
+
 
 /*
 	SEGUIR PENSANDO LOGICA VEHICULOS PRIORITARIOS:

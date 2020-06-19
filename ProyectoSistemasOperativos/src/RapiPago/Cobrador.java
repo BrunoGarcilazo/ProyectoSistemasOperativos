@@ -21,29 +21,30 @@ public class Cobrador {
 public boolean cobrarACliente(Vehiculo cliente,int tarifa) {
 	boolean cobrado = false;
 
-	if (cliente.getMatricula().compareTo(cliente.getInformacionPago().getMatricula()) != 0 || cliente.getMatricula() == null) {
+	if (cliente.getMatricula().compareTo(cliente.getInformacionPago().getMatricula()) != 0 || cliente.getMatricula() == null || cliente.getMatricula().compareTo("")==0) {
 		this.multa(cliente, 2000);
 		logger.logCliente(cliente.getInformacionPago().getCI(), "Tu vehiculo paso por el Peaje con informacion irregular");
+		cobrado = false;
 
 		if (cliente.getSentido()) { // Se dirige hacia Montevideo. Corresponde Caminera Oeste.
 
 			if (cliente.getMatricula() == null) { // Si no tiene matricula, informo solo el Modelo y Color
 				logger.logCaminera(true, "ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
-						+ " irregular se dirige hacia su direccion");
+						+ "se dirige hacia el Oeste ");
 
 			} else { // Si tiene matricula, informo tambien la matricula.
 				logger.logCaminera(true, "  ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
-						+ " Matricula:" + cliente.getMatricula() + " irregular se dirige hacia su direccion");
+						+ " Matricula:" + " no tiene."+ " Se dirige hacia el Oeste ");
 			}
 		} else { // Se dirige hasta el Este
 
 			if (cliente.getMatricula() == null) { // Si no tiene matricula, solo informo el Modelo y Color
 				logger.logCaminera(false, "ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
-						+ " irregular se dirige hacia su direccion");
+						+ "se dirige hacia el Este ");
 
 			} else { // Si tiene matircula, informo tambien la matricula.
 				logger.logCaminera(false, "ALERTA: " + cliente.getModelo() + " / Color: " + cliente.getColor()
-						+ " Matricula:" + cliente.getMatricula() + " irregular se dirige hacia su direccion");
+						+ " Matricula:" + cliente.getMatricula() + " no tiene."+ " Se dirige hacia el Este ");
 			}
 		}
 	}

@@ -23,6 +23,10 @@ public class Sensor extends Thread{
         } 
     }
 
+    public int getCantidadTemp(){
+        return this.cantidadVehiculosTemp;
+    }
+    
     public void vehiculoDetectado(){
         this.cantidadVehiculosTemp++;
     }

@@ -5,13 +5,19 @@ public class Proyecto {
 
     public static void main(String[] args) throws Exception {
 	
-//        Logger logger = new Logger();
-//        logger.start();
-        
         Peaje pando = new Peaje("Ruta Interbalnearia KM.33");
-       
-        pando.start(); 
+        CreadorDeVehiculos creador = new CreadorDeVehiculos(pando);
+        creador.start();
 
+
+
+
+
+    //        Logger logger = new Logger();
+    //        logger.start();
+
+		 //pando.start(); 
+/*
         Vehiculo b1  = new Vehiculo("A1", 5 ,"Ford Fiesta" , "Blanco" , true,pando,99123456,500,111);
 	Vehiculo b2  = new Vehiculo("A2", 2, "Ford Fiesta", "Blanco", true,pando,99123457,500,112);
         Vehiculo b3  = new Vehiculo("A3", 2 ,"Ford Fiesta" , "Blanco" , true,pando,99123457,500,113);
@@ -85,5 +91,7 @@ public class Proyecto {
            e.printStackTrace();
         }						
         
+        
+    */    
 }
 }

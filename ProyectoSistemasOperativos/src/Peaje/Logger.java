@@ -26,7 +26,7 @@ public class Logger extends Thread {
             this.datosCabinas.put(aux, new LinkedList<String>());            
         }
         //Inicializa datosCaminera
-        for(int i = 0 ; i<2 ; i++){
+        for(int i = 1 ; i<=2 ; i++){
             Integer aux = i;
             this.datosCaminera.put(aux,new LinkedList<String>());
         }
@@ -48,7 +48,7 @@ public class Logger extends Thread {
         if(sentido){
             this.datosCaminera.get(1).addLast(mensaje);
         }else{
-            this.datosCaminera.get(0).addLast(mensaje);
+            this.datosCaminera.get(2).addLast(mensaje);
         }
     }
     /**
@@ -66,7 +66,7 @@ public class Logger extends Thread {
     @Override
     public void run()  {
 	    try  {
-	    Thread.sleep(30000); // Exporta los datos cada 20s
+	    Thread.sleep(60000); // Exporta los datos cada 20s
 	    }  catch  (InterruptedException e){
 	        e.printStackTrace();
         }
@@ -88,13 +88,13 @@ public class Logger extends Thread {
   
         //Escribe los avisos para la Caminera en archivos por separado para cada Caminera (Este y Oeste)
         if(camineraLogger){
-            for(int i=1 ; i < 2 ; i++){
+            for(int i=1 ; i <= 2 ; i++){
                 Integer key = i;
-                String[] datosEscribir = new String[this.datosCabinas.get(key).size()];
+                String[] datosEscribir = new String[this.datosCaminera.get(key).size()];
                 for(int j = 0 ; j < datosEscribir.length ; j++){
                     datosEscribir[j] = this.datosCaminera.get(key).get(j);
                 }
-                if(key == 0){
+                if(key == 1){
                     ManejadorArchivosGenerico.escribirArchivo("src\\Peaje\\Caminera_Oeste", datosEscribir);
                 }else{
                     ManejadorArchivosGenerico.escribirArchivo("src\\Peaje\\Caminera_Este" , datosEscribir);
