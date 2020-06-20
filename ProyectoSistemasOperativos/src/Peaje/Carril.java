@@ -29,6 +29,10 @@ public class Carril{
 		return this.esperaDeAutos;
 	}
 
+	public void setEsperaDeAutos(Vector<Vehiculo> vehiculos){
+		this.esperaDeAutos = vehiculos;
+	}
+
 	public boolean getHabilitado() {
 		return this.habilitado;
 	}

@@ -222,7 +222,7 @@ public class Peaje extends Thread {
 				carril = c;
 			}
 		}
-		if (carril != null){
+		if (carril != null){	
 			cabina = carril.getCabina();
 			if (cabina.getHabilitada()) { // quiero invertir el sentido.
 				sentido = carril.getCabina().getSentido();
@@ -235,7 +235,6 @@ public class Peaje extends Thread {
 					carril.getCabina().setSentido(sentidoDeseado);
 					carril.getCabina().setHabilitada(true);
 					carril.setHabilitado(true);
-
 				}	
 			}else{ // habilito la cabina en el sentido deseado.
 					carril.getCabina().setSentido(sentidoDeseado);
@@ -245,38 +244,85 @@ public class Peaje extends Thread {
 		}
 	}
 
-
-/*
-	SEGUIR PENSANDO LOGICA VEHICULOS PRIORITARIOS:
-
 	public void vehiculoPrioritarioSeAcerca(Vehiculo vehiculo) {
 		if(vehiculo != null && vehiculo.getTipoVehiculo()==1){
-			Carril carrilElegido = null;
-			if(vehiculo.getSentido()){
-				carrilElegido = vehiculo.seleccionarCarrilHaciaEste();						
-			}else{
-			carrilElegido = vehiculo.seleccionarCarrilHaciaMontevideo();
-			//tengo que hacer q se vacie
-			}
+			Carril carrilElegido = null;							
+			carrilElegido = this.obtenerCarrilPrioritario(vehiculo);
+			if (carrilElegido != null){				
+				carrilElegido.setHabilitado(false); // para que nadie pueda entrar al carril mientras q pasa el vehiculo prioritario.
+				if(carrilElegido.getEsperaDeAutos().size() == 0){
+					if(!carrilElegido.getCabina().getHabilitada()){
+						carrilElegido.getEsperaDeAutos().add(vehiculo); // unico vehiculo en lista de espera
+						carrilElegido.getCabina().setHabilitada(true); // habilito la cabina para que le cobre, se deshabilita desp con el metodo controladorDeCabinas. 
+					}	
+				}
+				else{
+					int id = carrilElegido.getNumeroCarril();
+					boolean seMovioTrafico = false;
+					for(Carril c : carriles){
+					// anterior al carril elegido
+						if((c.getNumeroCarril() + 1) == carrilElegido.getNumeroCarril() && c.getCabina().getSentido() == carrilElegido.getCabina().getSentido() && !seMovioTrafico){
+							// darle todos los autos del carrilElegido al carril "c"
+							c.setHabilitado(false); // no dejo que nadie mas entre a c
+							c.getEsperaDeAutos().addAll(carrilElegido.getEsperaDeAutos()); // Mando los Vehiculos del carrilElegido al carril vecino con mi mismo sentido
+							carrilElegido.setEsperaDeAutos(new Vector<Vehiculo>()); // vacio la lista de espera del carril x donde va a pasar el vehiculo prioritario
+							carrilElegido.setHabilitado(false); // deshabilito el carril para que nadie se ponga adelante 
+							carrilElegido.getEsperaDeAutos().add(vehiculo); // unico vehiculo en lista de espera
+							c.setHabilitado(true); 
+							carrilElegido.setHabilitado(true); // habilito el carril para que siga con su forma normal
+							seMovioTrafico = true;
+						}
+						
+						if((c.getNumeroCarril() -1) == carrilElegido.getNumeroCarril() && c.getCabina().getSentido() == carrilElegido.getCabina().getSentido() && !seMovioTrafico){
+							// darle todos los autos del carrilElegido al carril "c"
+							c.setHabilitado(false); // no dejo que nadie mas entre a c
+							c.getEsperaDeAutos().addAll(carrilElegido.getEsperaDeAutos()); // Mando los Vehiculos del carrilElegido al carril vecino con mi mismo sentido
+							carrilElegido.setEsperaDeAutos(new Vector<Vehiculo>()); // vacio la lista de espera del carril x donde va a pasar el vehiculo prioritario
+							carrilElegido.setHabilitado(false); // deshabilito el carril para que nadie se ponga adelante 
+							carrilElegido.getEsperaDeAutos().add(vehiculo); // unico vehiculo en lista de espera
+							c.setHabilitado(true); 
+							carrilElegido.setHabilitado(true); // habilito el carril para que siga con su forma normal
+							seMovioTrafico = true;
+						}
+							
+					}
 
-			if (carrilElegido != null) {
-				
-				carrilElegido.setHabilitado(false);
-				carrilElegido.
+				 //mover a los autos xq estan en la lista de espera.
+				 //mover hacia los costados.
+				}
 			}else{
 				return; // falsa alarma bois
 			}
 
 		}
-
 	}
-*/
+
+	/**
+	 *  Metodo que devuelve el carril por donde deberia ir el vehiculo prioritario, esta es la que tiene menor espera (puede tener una lista de 0)
+	 *  
+	 */
+	public Carril obtenerCarrilPrioritario(Vehiculo vehiculoPrioritario){
+		Carril carrilElegido= null;
+		
+		for(Carril c : this.carriles){
+			if(c.getCabina().getSentido() == vehiculoPrioritario.getSentido()){
+				if(carrilElegido == null){
+					carrilElegido = c;
+				}
+				if(c.getEsperaDeAutos().size() <= carrilElegido.getEsperaDeAutos().size()){
+					carrilElegido = c;
+				}
+			}
+		}
+		return carrilElegido;
+	}
+
 	@Override
 	public void run() {
 		crearCabinasYCarriles(); // Crea las Cabinas.
 		startCabinas(); // Comienzan a "trabajar" todas las Cabinas.
 
-		while (true) {
+		while (true){
 		
 			System.out.println("Monitor hacia el Este");
 			this.monitorEste.imprimir();

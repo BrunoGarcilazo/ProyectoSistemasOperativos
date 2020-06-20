@@ -81,8 +81,7 @@ public class Cabina extends Thread {
 							switch (this.enCabina.getTipoVehiculo()) {
 
 								case 1: //Prioritario
-									pagoExitoso = this.cobrar(this.enCabina, 0);
-									
+									pagoExitoso = this.cobrar(this.enCabina, 0); 
 									break;
 
 								case 2: // Automovil
