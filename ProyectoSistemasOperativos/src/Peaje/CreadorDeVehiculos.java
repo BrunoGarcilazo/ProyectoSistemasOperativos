@@ -4,7 +4,27 @@ public class CreadorDeVehiculos extends Thread {
     
     Peaje pando;
     private Integer numero = 0;
-	
+
+    private String matriculaCamiones = "ATP";
+    private Integer cantCamiones = 0;
+
+    private String matriculaBus = "STU";
+    private Integer cantBus = 0;
+
+    private String matriculaFurgon = "STM";
+    private Integer cantFurgon = 0;
+
+    private String matriculaAuto = "SBN";
+    private Integer cantAuto = 0;
+
+    private String matriculaAmbulancia = "AAM";
+    private Integer cantAmbulancia = 0;
+
+    private String matriculaPolicia = "AMI";
+    private Integer cantPolicia = 0;
+
+    private String matriculaBomberos = "ACB"; // Bomberos y Policias coinciden en la terminacion de la matricula, por eso CB = "Cuerpo de Bomberos" para diferenciar.
+	private Integer cantBomberos = 0;
 	public CreadorDeVehiculos(Peaje peaje) {
         this.pando = peaje; 
         //peaje.invertirSentidoCarril(2);
@@ -147,24 +167,67 @@ public class CreadorDeVehiculos extends Thread {
            }
 
 		
-	}
+    }
+    
+    //Caso8:
+    // - Un Vehiculo solo. Testeo de funciones basicas (logs por ej)
+    public void caso8(){
+        Vehiculo automovil  = new Vehiculo(obtenerMatriculaAuto(),2,"Tata" , "Indigo" , false,pando,99096096,2000,49042045);
+        automovil.start();
+    }
+
+    public String obtenerMatriculaAuto(){
+        this.cantAuto = this.cantAuto + 1;
+        Integer id = this.cantAuto;
+        String matricula = this.matriculaAuto + id.toString();
+        return matricula;
+    }
+
+    public String obtenerMatriculaCamion(){
+        this.cantCamiones = this.cantCamiones + 1;
+        Integer id = this.cantCamiones;
+        String matricula = this.matriculaCamiones + id.toString();
+        return matricula;
+    }
+
+    public String obtenerMatriculaBus(){
+        this.cantBus = this.cantBus + 1;
+        Integer id = this.cantBus;
+        String matricula = this.matriculaBus + id.toString();
+        return matricula;
+    }
+
+    public String obtenerMatriculaFurgon(){
+        this.cantFurgon = this.cantFurgon + 1;
+        Integer id = this.cantFurgon;
+        String matricula = this.matriculaFurgon+ id.toString();
+        return matricula;
+    }
+
+    public String obtenerMatriculaAmbulancia(){
+        this.cantAmbulancia = this.cantAmbulancia + 1;
+        Integer id = this.cantAmbulancia;
+        String matricula = this.matriculaAmbulancia + id.toString();
+        return matricula;z
+    }
 	
 
     @Override
 	public void run() {
     // inicia el peaje uniformemente.
-        caso3();
-        caso7();
+        caso8();
+        //caso3();
+        //caso7();
       
 			try{
 			   Thread.sleep(10000);
 			} catch (InterruptedException e) {
 			e.printStackTrace();
             }
-        caso6();
-        caso1();
-        caso4();
-        caso5();
+        //caso6();
+        //caso1();
+        //caso4();
+        //caso5();
 		// Agrego vehiculos sin saldo en ambos sentidos
 		//caso6();
         

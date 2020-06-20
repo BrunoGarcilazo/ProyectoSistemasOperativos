@@ -70,7 +70,6 @@ public class Peaje extends Thread {
 		
 		// Crea 5 Cabinas con su Carril, con direccion al Este. Deshabilitadas x defecto(menos la 1 y la 10, son obligatorias)
 		for (int i = 2; i <= 5; i++) {
-
 			Cabina cabina = new Cabina(false, true, i); // inicializo las cabinas apagadas
 			Carril carril = new Carril(i, cabina, true);
 			cabina.setCarril(carril);

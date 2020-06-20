@@ -57,6 +57,7 @@ public class Logger extends Thread {
     public void logCliente(Integer ci,String datos){
         if(!this.datosClientes.containsKey(ci)){ // Si ese Cliente es nuevo en el Peaje
             this.datosClientes.put(ci, new LinkedList<String>());
+            this.datosClientes.get(ci).addLast(datos);
         }else{  // Si ese Cliente ya ha pasado anteriormente por el Peaje
             this.datosClientes.get(ci).addLast(datos);
         }
@@ -66,14 +67,10 @@ public class Logger extends Thread {
     @Override
     public void run()  {
 	    try  {
-	    Thread.sleep(90000); // Exporta los datos cada 20s
+	    Thread.sleep(15000); // Exporta los datos cada 20s
 	    }  catch  (InterruptedException e){
 	        e.printStackTrace();
         }
-
-
-        System.out.println("Logger exporta los datos");
-
         // Envia los datos de cada Cabina en archivos por separado.
         if(cabinaLogger){
 	        for (int i = 1; i <= 10; i++) {
