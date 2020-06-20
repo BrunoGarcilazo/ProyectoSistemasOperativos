@@ -153,35 +153,18 @@ public class CreadorDeVehiculos extends Thread {
     @Override
 	public void run() {
     // inicia el peaje uniformemente.
-       /*caso1();
-        try{
-            Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-        //agrego vehiculos prioritarios
-		caso6();
-        try{
-            Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
-		//vehiculos con cosas ilegales
-        caso2();
+        caso3();
         caso7();
-         /*try{
-			   Thread.sleep(20000);
-			} catch (InterruptedException e) {
-			e.printStackTrace();
-			}
-			//Vienen autos hacia el este y se agregan mas vehiculos prioritarios.
-			caso3();
-			        */
+      
 			try{
 			   Thread.sleep(10000);
 			} catch (InterruptedException e) {
 			e.printStackTrace();
-			}
+            }
+        caso6();
+        caso1();
+        caso4();
+        caso5();
 		// Agrego vehiculos sin saldo en ambos sentidos
 		//caso6();
         

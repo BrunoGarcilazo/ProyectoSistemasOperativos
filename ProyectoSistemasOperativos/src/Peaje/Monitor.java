@@ -8,8 +8,8 @@ public class Monitor {
 	private Vector<Carril> carriles;
 	
 
-	public Monitor(boolean haciaMontevideo) {
-		this.haciaMontevideo = haciaMontevideo;
+	public Monitor(boolean sentido) {
+		this.haciaMontevideo = sentido;
 	}
 
 	public Vector<Carril> getCarriles(){

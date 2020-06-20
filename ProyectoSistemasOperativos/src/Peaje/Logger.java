@@ -66,7 +66,7 @@ public class Logger extends Thread {
     @Override
     public void run()  {
 	    try  {
-	    Thread.sleep(60000); // Exporta los datos cada 20s
+	    Thread.sleep(90000); // Exporta los datos cada 20s
 	    }  catch  (InterruptedException e){
 	        e.printStackTrace();
         }

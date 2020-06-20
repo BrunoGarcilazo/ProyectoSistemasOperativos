@@ -69,6 +69,7 @@ public class Cabina extends Thread {
 
 	@Override
 	public void run() {
+		System.out.println("Cantidad de Vehiculos en espera: "+ this.carril.getEsperaDeAutos().size());
             while (habilitada){
 				try {
 					if (!carril.getEsperaDeAutos().isEmpty()) {

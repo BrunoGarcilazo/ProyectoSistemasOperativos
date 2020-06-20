@@ -19,7 +19,7 @@ public class Peaje extends Thread {
 		this.cabinas = new Vector<>();
 		this.carriles = new Vector<>();
 		this.haciaMontevideo = new Sensor(true,this);
-		this.haciaElEste = new Sensor(true,this);
+		this.haciaElEste = new Sensor(false,this);
 		this.monitorEste = new Monitor(true);
 		this.monitorOeste = new Monitor(false);
 		this.logger = new Logger(true,false,false);
@@ -56,47 +56,43 @@ public class Peaje extends Thread {
 	 * Crea 5 cabinas hacia el Oeste y sus Carriles
 	 * Acondiciona los Monitores
 	 */
-	private void crearCabinasYCarriles(){
+	private void crearCabinasYCarriles() {
 
+		Cabina cabinaN1 = new Cabina(false, true, 1); // la 1 siempre prendida
+		Carril carrilN1 = new Carril(1, cabinaN1, true);
+		cabinaN1.setCarril(carrilN1);
+
+		Cabina cabinaN10 = new Cabina(true, true, 10); // la 10 siempre prendida
+		Carril carrilN10 = new Carril(10, cabinaN10, true);
+
+		this.cabinas.add(cabinaN1); // agrego la 1er cabina
+		this.carriles.add(carrilN1); //agrego el 1er carril
+		
+		// Crea 5 Cabinas con su Carril, con direccion al Este. Deshabilitadas x defecto(menos la 1 y la 10, son obligatorias)
 		for (int i = 2; i <= 5; i++) {
-			Cabina cabinaN1 = new Cabina(false, true, 1); // la 1 siempre prendida
+
 			Cabina cabina = new Cabina(false, true, i); // inicializo las cabinas apagadas
-
-			Carril carrilN1 = new Carril(1, cabinaN1,true);
-			Carril carril = new Carril(i, cabina,true);
-
-			cabinaN1.setCarril(carrilN1);
+			Carril carril = new Carril(i, cabina, true);
 			cabina.setCarril(carril);
+			this.cabinas.add(cabina); // agrego las demas cabinas
+			this.carriles.add(carril); // agrego los demas carriles
 
-			this.cabinas.add(cabinaN1); // agrego la 1er cabina
-			this.cabinas.add(cabina);  // agrego las demas cabinas
-
-			this.carriles.add(carrilN1);	//agrego el 1er carril
-			this.carriles.add(carril);	// agrego los demas carriles
-
-			// Crea 5 Cabinas con su Carril, con direccion al Este. Deshabilitadas x defecto(menos la 1 y la 10, son obligatorias)
 		}
 
-		for (int i = 6; i <= 9; i++) {
-			
-			Cabina cabina_ = new Cabina(true, true, i); // inicializo las cabinas apagadas
-			Cabina cabinaN10 = new Cabina(true, true, 10); // la 10 siempre prendida
+		// Crea 5 Cabinas con su Carril, con direccion al Oeste. Deshabilitadas x defecto(menos la 1 y la 10, son obligatorias).  		
+		for (int i = 6; i <= 9; i++) { 
 
-			Carril carril_ = new Carril(i, cabina_,true);
-			Carril carrilN10 = new Carril(1, cabinaN10,true);
-			
+			Cabina cabina_ = new Cabina(true, true, i); // inicializo las cabinas apagadas
+			Carril carril_ = new Carril(i, cabina_, true);
 			cabina_.setCarril(carril_);
 			cabinaN10.setCarril(carrilN10);
-			
-			this.cabinas.add(cabina_);  // agrego las demas cabinas
-			this.cabinas.add(cabinaN10); // agrego la cabina N10
-
-			this.carriles.add(carril_);	// agrego los demas carriles
-			this.carriles.add(carrilN10);	//agrego el carril N10
-
-			// Crea 5 Cabinas con su Carril, con direccion al Oeste. Deshabilitadas x defecto(menos la 1 y la 10, son obligatorias).            
+			this.cabinas.add(cabina_); // agrego las demas cabinas
+			this.carriles.add(carril_); // agrego los demas carriles
+       
 		}
-		
+
+		this.carriles.add(carrilN10); //agrego el carril N10
+		this.cabinas.add(cabinaN10); // agrego la cabina N10
 		//Acondiciono Monitor Oeste (haciaMontevideo) 1,2,3,...10
 		this.monitorOeste.setCarriles(this.carriles);
 
@@ -104,8 +100,6 @@ public class Peaje extends Thread {
 		Vector<Carril> aux = this.carriles;
 		Collections.reverse(aux);
 		this.monitorEste.setCarriles(aux);
-
-		
 
 	}
 	
@@ -118,19 +112,21 @@ public class Peaje extends Thread {
 	 * 	   el peaje abrira 9 Cabinas hacia Montevideo y 1 hacia el Este
 	 * La cabina 1 y 10 no cambian de sentido ni se deshabilitan nunca.
 	 */
-
+	private void powerSavingMode(){
+	//Apago todas las cabinas que no estan siendo utilizadas menos la 1 y la 10 que nunca se apagan.		
+			
+		for (Carril c : this.carriles) {
+			if((c.getCabina().getID()>= 2 && c.getCabina().getID()<= 9)){
+				if (c.getEsperaDeAutos().size() == 0 && c.getCabina().getEnCabina() == null && c.getCabina().getHabilitada()){
+					c.getCabina().setHabilitada(false);
+					System.out.println("Se deshabilita la Cabina " + c.getCabina().getID());
+				}
+			}
+		}
+	}
+	
 	private void controladorDeCabinas(){
 		
-			//Apago todas las cabinas que no estan siendo utilizadas menos la 1 y la 10 que nunca se apagan.		
-			for (int i = 2; i <= 9; i++) {
-				
-				if (this.carriles.get(i).getEsperaDeAutos().size() == 0
-						&& this.carriles.get(i).getCabina().getEnCabina() == null) {
-					this.carriles.get(i).getCabina().setHabilitada(false);
-					
-				}
-
-			}
 			int cantidadTotalVehiculos = this.haciaElEste.getCantidadTemp() + this.haciaMontevideo.getCantidadTemp();
 			if (cantidadTotalVehiculos != 0) {
 				int haciaMontevideoRatio = (this.haciaMontevideo.getCantidadTemp() * 100) / cantidadTotalVehiculos; // porcentaje de autos que van hacia mdeo
@@ -172,7 +168,7 @@ public class Peaje extends Thread {
 						this.invertirSentidoCarril(4, false);
 						this.invertirSentidoCarril(5, false);
 					}
-				} else {
+				} else if (cantidadTotalVehiculos > 30) {
 					// Caso de mucho trafico, habilito todas las Cabinas/Carriles
 					System.out.println("Se habilitan todas las cabinas");
 					int cabinasHaciaMontevideo = (haciaMontevideoRatio / 10) - 1;
@@ -186,6 +182,9 @@ public class Peaje extends Thread {
 						this.invertirSentidoCarril(i, true);
 					}
 
+				}
+				else{ // cuando no hay autos deshabilito todas menos 1 y 10
+					//powerSavingMode();
 				}
 			}
 	}
@@ -338,13 +337,18 @@ public class Peaje extends Thread {
 
 			//System.out.println("Monitor hacia el Oeste");
 			//this.monitorOeste.imprimir();
+			powerSavingMode();
+			controladorDeCabinas();
 			try{
-				Thread.sleep(2000);
+				Thread.sleep(10000);
 			}
 			catch (InterruptedException e) {
 					e.printStackTrace();
 			}
-			controladorDeCabinas();
+
+			powerSavingMode();
+			
+			
 		}
 	}
 

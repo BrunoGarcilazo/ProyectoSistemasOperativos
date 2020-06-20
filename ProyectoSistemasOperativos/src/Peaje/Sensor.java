@@ -33,28 +33,22 @@ public class Sensor extends Thread{
     
     public void vehiculoDetectado(){
         this.cantidadVehiculosTemp = this.cantidadVehiculosTemp + 1;
-        if(haciaMontevideo){
-            System.out.println("Sensor Este: Vehiculo Detectado");
-        }else{
-            System.out.println("Sensor Oeste: Vehiculo Detectado +");
-        }
     }
 
     @Override
     public void run(){
         while(true){
-            System.out.println(); 
             if(this.getCantidadTemp() != 0){
                 if(haciaMontevideo){
                     System.out.println("Sensor Este: " + this.cantidadVehiculosTemp);
-                }else if(!haciaMontevideo){
+                }else{
                     System.out.println("Sensor Oeste: " + this.cantidadVehiculosTemp);
                 }      
                        
                 this.cantidadVehiculosTemp = this.cantidadVehiculosTemp - 1 ;
             }
             try{
-                Thread.sleep(750);
+                Thread.sleep(2000);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }
