@@ -191,6 +191,11 @@ public class Vehiculo extends Thread {
 	@Override
 	public void run(){
 
+		if(es_prioritario()){
+			peaje.vehiculoPrioritarioSeAcerca(this);
+		}
+		
+
 		System.out.println("Vehiculo "+this.matricula+" se acerca al peaje");
 		//Pasa por el sensor que cuenta la cantidad de vehiculos circulando
 		if (this.getSentido()) {

@@ -125,7 +125,7 @@ public class CreadorDeVehiculos extends Thread {
     // Caso 7 :
 	// - Envio vehiculos prioritarios luego de un tiempo.
 	public void caso6() {
-
+        
         Vehiculo ambulancia = new Vehiculo("Amb" + "30", 1, "Semm", "Blanco", false, pando, 1049999999, 0, 000000104);
 		Vehiculo bombero = new Vehiculo("Bomb" + "50", 1, "Bombero", "Rojo", true, pando, 10799999, 0, 000000102);
         Vehiculo bombero1 = new Vehiculo("Bomb" + "50", 1, "Bombero", "Rojo", false, pando, 107999980, 0,000000006);
@@ -154,7 +154,7 @@ public class CreadorDeVehiculos extends Thread {
 			e.printStackTrace();
 		}*/
 		//vehiculos con cosas ilegales
-		caso5();
+		caso1();
          /*try{
 			   Thread.sleep(20000);
 			} catch (InterruptedException e) {
@@ -164,12 +164,12 @@ public class CreadorDeVehiculos extends Thread {
 			caso3();
 			        */
 			try{
-			   Thread.sleep(20000);
+			   Thread.sleep(10000);
 			} catch (InterruptedException e) {
 			e.printStackTrace();
 			}
 		// Agrego vehiculos sin saldo en ambos sentidos
-		caso4();
+		caso6();
         
         
     }

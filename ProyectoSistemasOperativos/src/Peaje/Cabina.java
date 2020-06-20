@@ -112,11 +112,8 @@ public class Cabina extends Thread {
 								this.logger.logCabina(this.id, "El vehiculo matricula " + enCabina.getMatricula()
 								+ " fue multado por falta de saldo.");
 								
-							} else {
-								System.out.println(
-										"El pago de la matricula " + enCabina.getMatricula() + " se realizó con éxito");
-
 							}
+
 							if (this.haciaMontevideo) {
 								this.logger.logCabina(this.id, "El vehiculo matricula " + enCabina.getMatricula()
 								+ " se dirige hacia el Oeste");

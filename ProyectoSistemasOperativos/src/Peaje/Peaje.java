@@ -80,7 +80,7 @@ public class Peaje extends Thread {
 		for (int i = 6; i <= 9; i++) {
 			
 			Cabina cabina_ = new Cabina(true, false, i); // inicializo las cabinas apagadas
-			Cabina cabinaN10 = new Cabina(false, true, 10); // la 10 siempre prendida
+			Cabina cabinaN10 = new Cabina(true, true, 10); // la 10 siempre prendida
 
 			Carril carril_ = new Carril(i, cabina_,true);
 			Carril carrilN10 = new Carril(1, cabinaN10,true);
@@ -127,11 +127,14 @@ public class Peaje extends Thread {
 		
 		//Apago todas las cabinas que no estan siendo utilizadas menos la 1 y la 10 que nunca se apagan.		
 		for(int i=2; i<= 9; i++){
-			this.apagarCabina(i);
+			if(this.carriles.get(i).getEsperaDeAutos().size() == 0 && this.carriles.get(i).getCabina().getEnCabina() == null){
+				this.carriles.get(i).getCabina().setHabilitada(false);
+			}
+			
 		}
 
 		if(cantidadTotalVehiculos > 2 && cantidadTotalVehiculos < 15){			
-			
+			System.out.println("Se habilitan 2 cabinas nuevas");
 			// Otorgo permiso para abrir 2 cabinas nuevas	
 			if(haciaMontevideoRatio < 60 && haciaMontevideoRatio > 40){
 				// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 10
@@ -147,7 +150,7 @@ public class Peaje extends Thread {
 			}
 		}else if(cantidadTotalVehiculos >= 15 && cantidadTotalVehiculos <= 30){
 			// Otorgo permiso para abrir 4 Cabinas 	
-
+			System.out.println("Se habilitan 4 cabinas nuevas");
 			if(haciaMontevideoRatio < 65 && haciaMontevideoRatio > 35){
 				// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 15
 				this.invertirSentidoCarril(2, false); // hacia el este
@@ -168,6 +171,7 @@ public class Peaje extends Thread {
 			}
 		}else{
 			// Caso de mucho trafico, habilito todas las Cabinas/Carriles
+			System.out.println("Se habilitan todas las cabinas");
 			int cabinasHaciaMontevideo = (haciaMontevideoRatio/10) - 1;
 			int cabinasHaciaEste = (haciaEsteRatio/10) - 1;
 
@@ -318,16 +322,18 @@ public class Peaje extends Thread {
 
 	@Override
 	public void run() {
+		this.haciaElEste.start();
+		this.haciaMontevideo.start();
 		crearCabinasYCarriles(); // Crea las Cabinas.
 		startCabinas(); // Comienzan a "trabajar" todas las Cabinas.
 
 		while (true){
 		
-			System.out.println("Monitor hacia el Este");
-			this.monitorEste.imprimir();
+			//System.out.println("Monitor hacia el Este");
+			//this.monitorEste.imprimir();
 
-			System.out.println("Monitor hacia el Oeste");
-			this.monitorOeste.imprimir();
+			//System.out.println("Monitor hacia el Oeste");
+			//this.monitorOeste.imprimir();
 			try{
 				Thread.sleep(5000);
 			}
