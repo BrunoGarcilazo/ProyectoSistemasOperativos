@@ -245,7 +245,9 @@ public class Peaje extends Thread {
 	}
 
 	public void vehiculoPrioritarioSeAcerca(Vehiculo vehiculo) {
+
 		if(vehiculo != null && vehiculo.getTipoVehiculo()==1){
+
 			Carril carrilElegido = null;							
 			carrilElegido = this.obtenerCarrilPrioritario(vehiculo);
 			if (carrilElegido != null){				
@@ -290,10 +292,7 @@ public class Peaje extends Thread {
 				 //mover a los autos xq estan en la lista de espera.
 				 //mover hacia los costados.
 				}
-			}else{
-				return; // falsa alarma bois
 			}
-
 		}
 	}
 
