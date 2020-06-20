@@ -1,5 +1,9 @@
 package Peaje;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+
+
+
 public class Sensor extends Thread{
 
     private Peaje peaje;
@@ -28,19 +32,31 @@ public class Sensor extends Thread{
     }
     
     public void vehiculoDetectado(){
-        this.cantidadVehiculosTemp++;
+        this.cantidadVehiculosTemp = this.cantidadVehiculosTemp + 1;
+        if(haciaMontevideo){
+            System.out.println("Sensor Este: Vehiculo Detectado");
+        }else{
+            System.out.println("Sensor Oeste: Vehiculo Detectado +");
+        }
     }
 
     @Override
     public void run(){
         while(true){
-            if(this.cantidadVehiculosTemp != 0){
-                this.cantidadVehiculosTemp--;
-                try{
-                    Thread.sleep(1500);
-                }catch(InterruptedException e){
-                    e.printStackTrace();
-                }
+            System.out.println(); 
+            if(this.getCantidadTemp() != 0){
+                if(haciaMontevideo){
+                    System.out.println("Sensor Este: " + this.cantidadVehiculosTemp);
+                }else if(!haciaMontevideo){
+                    System.out.println("Sensor Oeste: " + this.cantidadVehiculosTemp);
+                }      
+                       
+                this.cantidadVehiculosTemp = this.cantidadVehiculosTemp - 1 ;
+            }
+            try{
+                Thread.sleep(750);
+            }catch(InterruptedException e){
+                e.printStackTrace();
             }
         }
     }

@@ -60,7 +60,7 @@ public class Peaje extends Thread {
 
 		for (int i = 2; i <= 5; i++) {
 			Cabina cabinaN1 = new Cabina(false, true, 1); // la 1 siempre prendida
-			Cabina cabina = new Cabina(false, false, i); // inicializo las cabinas apagadas
+			Cabina cabina = new Cabina(false, true, i); // inicializo las cabinas apagadas
 
 			Carril carrilN1 = new Carril(1, cabinaN1,true);
 			Carril carril = new Carril(i, cabina,true);
@@ -79,7 +79,7 @@ public class Peaje extends Thread {
 
 		for (int i = 6; i <= 9; i++) {
 			
-			Cabina cabina_ = new Cabina(true, false, i); // inicializo las cabinas apagadas
+			Cabina cabina_ = new Cabina(true, true, i); // inicializo las cabinas apagadas
 			Cabina cabinaN10 = new Cabina(true, true, 10); // la 10 siempre prendida
 
 			Carril carril_ = new Carril(i, cabina_,true);
@@ -120,70 +120,74 @@ public class Peaje extends Thread {
 	 */
 
 	private void controladorDeCabinas(){
-
-		int cantidadTotalVehiculos = this.haciaElEste.getCantidadTemp() + this.haciaMontevideo.getCantidadTemp();
-		int haciaMontevideoRatio = (this.haciaMontevideo.getCantidadTemp()*100)/cantidadTotalVehiculos; // porcentaje de autos que van hacia mdeo
-		int haciaEsteRatio = 100 - haciaMontevideoRatio; 
 		
-		//Apago todas las cabinas que no estan siendo utilizadas menos la 1 y la 10 que nunca se apagan.		
-		for(int i=2; i<= 9; i++){
-			if(this.carriles.get(i).getEsperaDeAutos().size() == 0 && this.carriles.get(i).getCabina().getEnCabina() == null){
-				this.carriles.get(i).getCabina().setHabilitada(false);
-			}
-			
-		}
-
-		if(cantidadTotalVehiculos > 2 && cantidadTotalVehiculos < 15){			
-			System.out.println("Se habilitan 2 cabinas nuevas");
-			// Otorgo permiso para abrir 2 cabinas nuevas	
-			if(haciaMontevideoRatio < 60 && haciaMontevideoRatio > 40){
-				// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 10
-				this.invertirSentidoCarril(2, false); // hacia el este
-				this.invertirSentidoCarril(9, true); // hacia el oeste
+			//Apago todas las cabinas que no estan siendo utilizadas menos la 1 y la 10 que nunca se apagan.		
+			for (int i = 2; i <= 9; i++) {
 				
-			}else if(haciaMontevideoRatio > 60){
-				this.invertirSentidoCarril(9,true);
-				this.invertirSentidoCarril(8,true);
-			}else{
-				this.invertirSentidoCarril(2, false);
-				this.invertirSentidoCarril(3, false);
-			}
-		}else if(cantidadTotalVehiculos >= 15 && cantidadTotalVehiculos <= 30){
-			// Otorgo permiso para abrir 4 Cabinas 	
-			System.out.println("Se habilitan 4 cabinas nuevas");
-			if(haciaMontevideoRatio < 65 && haciaMontevideoRatio > 35){
-				// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 15
-				this.invertirSentidoCarril(2, false); // hacia el este
-				this.invertirSentidoCarril(3, false);
-				this.invertirSentidoCarril(9, true); // hacia el oeste
-				this.invertirSentidoCarril(8, true); 
-							
-			}else if(haciaMontevideoRatio > 60){
-				this.invertirSentidoCarril(9,true);
-				this.invertirSentidoCarril(8,true);
-				this.invertirSentidoCarril(7,true);
-				this.invertirSentidoCarril(6,true);
-			}else{
-				this.invertirSentidoCarril(2, false);
-				this.invertirSentidoCarril(3, false);
-				this.invertirSentidoCarril(4, false);
-				this.invertirSentidoCarril(5, false);
-			}
-		}else{
-			// Caso de mucho trafico, habilito todas las Cabinas/Carriles
-			System.out.println("Se habilitan todas las cabinas");
-			int cabinasHaciaMontevideo = (haciaMontevideoRatio/10) - 1;
-			int cabinasHaciaEste = (haciaEsteRatio/10) - 1;
-
-			for(int i = 2 ; i <= (1 + cabinasHaciaEste); i++){
-				this.invertirSentidoCarril(i, false);
-			}
+				if (this.carriles.get(i).getEsperaDeAutos().size() == 0
+						&& this.carriles.get(i).getCabina().getEnCabina() == null) {
+					this.carriles.get(i).getCabina().setHabilitada(false);
 					
-			for(int i = 9 ; i >= (9 - cabinasHaciaMontevideo) ; i--){
-				this.invertirSentidoCarril(i, true);
-			}
+				}
 
-		}
+			}
+			int cantidadTotalVehiculos = this.haciaElEste.getCantidadTemp() + this.haciaMontevideo.getCantidadTemp();
+			if (cantidadTotalVehiculos != 0) {
+				int haciaMontevideoRatio = (this.haciaMontevideo.getCantidadTemp() * 100) / cantidadTotalVehiculos; // porcentaje de autos que van hacia mdeo
+				int haciaEsteRatio = 100 - haciaMontevideoRatio;
+
+				if (cantidadTotalVehiculos > 2 && cantidadTotalVehiculos < 15) {
+					System.out.println("Se habilitan 2 cabinas nuevas");
+					// Otorgo permiso para abrir 2 cabinas nuevas	
+					if (haciaMontevideoRatio < 60 && haciaMontevideoRatio > 40) {
+						// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 10
+						this.invertirSentidoCarril(2, false); // hacia el este
+						this.invertirSentidoCarril(9, true); // hacia el oeste
+
+					} else if (haciaMontevideoRatio > 60) {
+						this.invertirSentidoCarril(9, true);
+						this.invertirSentidoCarril(8, true);
+					} else {
+						this.invertirSentidoCarril(2, false);
+						this.invertirSentidoCarril(3, false);
+					}
+				} else if (cantidadTotalVehiculos >= 15 && cantidadTotalVehiculos <= 30) {
+					// Otorgo permiso para abrir 4 Cabinas 	
+					System.out.println("Se habilitan 4 cabinas nuevas");
+					if (haciaMontevideoRatio < 65 && haciaMontevideoRatio > 35) {
+						// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 15
+						this.invertirSentidoCarril(2, false); // hacia el este
+						this.invertirSentidoCarril(3, false);
+						this.invertirSentidoCarril(9, true); // hacia el oeste
+						this.invertirSentidoCarril(8, true);
+
+					} else if (haciaMontevideoRatio > 60) {
+						this.invertirSentidoCarril(9, true);
+						this.invertirSentidoCarril(8, true);
+						this.invertirSentidoCarril(7, true);
+						this.invertirSentidoCarril(6, true);
+					} else {
+						this.invertirSentidoCarril(2, false);
+						this.invertirSentidoCarril(3, false);
+						this.invertirSentidoCarril(4, false);
+						this.invertirSentidoCarril(5, false);
+					}
+				} else {
+					// Caso de mucho trafico, habilito todas las Cabinas/Carriles
+					System.out.println("Se habilitan todas las cabinas");
+					int cabinasHaciaMontevideo = (haciaMontevideoRatio / 10) - 1;
+					int cabinasHaciaEste = (haciaEsteRatio / 10) - 1;
+
+					for (int i = 2; i <= (1 + cabinasHaciaEste); i++) {
+						this.invertirSentidoCarril(i, false);
+					}
+
+					for (int i = 9; i >= (9 - cabinasHaciaMontevideo); i--) {
+						this.invertirSentidoCarril(i, true);
+					}
+
+				}
+			}
 	}
 	public void apagarCabina(int id){
 		Cabina cabina = null;
@@ -335,7 +339,7 @@ public class Peaje extends Thread {
 			//System.out.println("Monitor hacia el Oeste");
 			//this.monitorOeste.imprimir();
 			try{
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 			}
 			catch (InterruptedException e) {
 					e.printStackTrace();

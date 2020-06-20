@@ -19,23 +19,19 @@ public class CreadorDeVehiculos extends Thread {
             Integer key = i;
             Vehiculo automovil  = new Vehiculo("A"+key.toString(), 2 ,"Ford Fiesta" , "Blanco" , true,pando,99000000+i,500,4000000+i);
             Vehiculo furgon  = new Vehiculo("F"+key.toString(), 3 ,"Hyundai H100" , "Rojo" , true,pando,94000000+i,600,5000000+i);
-            Vehiculo camion  = new Vehiculo("C"+key.toString(), 5 ,"Scania R620" , "Azul" , true,pando,96000000+i,1000,6000000+i);
-            Vehiculo omnibus  = new Vehiculo("O"+key.toString(), 4 ,"BYD Electrico" , "Negro" , true,pando,95000000+i,700,7000000+i);
+           
             automovil.start();
             furgon.start();
-            camion.start();
-            omnibus.start();
+            
         }
         for(int i=11; i <= 21; i++){
             Integer key = i;
             Vehiculo automovil  = new Vehiculo("A"+key.toString(), 2 ,"Ford Fiesta" , "Blanco" , false,pando,99000000+i,500,4000000+i);
             Vehiculo furgon  = new Vehiculo("F"+key.toString(), 3 ,"Hyundai H100" , "Rojo" , false,pando,94000000+i,600,5000000+i);
-            Vehiculo camion  = new Vehiculo("C"+key.toString(), 5 ,"Scania R620" , "Azul" , false,pando,96000000+i,1000,6000000+i);
-            Vehiculo omnibus  = new Vehiculo("O"+key.toString(), 4 ,"BYD Electrico" , "Negro" , false,pando,95000000+i,700,7000000+i);
+            
             automovil.start();
             furgon.start();
-            camion.start();
-            omnibus.start();
+            
         }
     }
     
@@ -47,23 +43,19 @@ public class CreadorDeVehiculos extends Thread {
             Integer key = i;
             Vehiculo automovil  = new Vehiculo("A"+key.toString(), 2 ,"Ford Fiesta" , "Blanco" , true,pando,99000000+i,500,4000000+i);
             Vehiculo furgon  = new Vehiculo("F"+key.toString(), 3 ,"Hyundai H100" , "Rojo" , true,pando,94000000+i,600,5000000+i);
-            Vehiculo camion  = new Vehiculo("C"+key.toString(), 5 ,"Scania R620" , "Azul" , true,pando,96000000+i,1000,6000000+i);
-            Vehiculo omnibus  = new Vehiculo("O"+key.toString(), 4 ,"BYD Electrico" , "Negro" , true,pando,95000000+i,700,7000000+i);
+            
             automovil.start();
             furgon.start();
-            camion.start();
-            omnibus.start();
+            
         }
 		for(int i=28; i <= 31; i++){
             Integer key = i;
             Vehiculo automovil  = new Vehiculo("A"+key.toString(), 2 ,"Ford Fiesta" , "Blanco" , false,pando,99000000+i,500,4000000+i);
             Vehiculo furgon  = new Vehiculo("F"+key.toString(), 3 ,"Hyundai H100" , "Rojo" , false,pando,94000000+i,600,5000000+i);
-            Vehiculo camion  = new Vehiculo("C"+key.toString(), 5 ,"Scania R620" , "Azul" , false,pando,96000000+i,1000,6000000+i);
-            Vehiculo omnibus  = new Vehiculo("O"+key.toString(), 4 ,"BYD Electrico" , "Negro" , false,pando,95000000+i,700,7000000+i);
+            
             automovil.start();
             furgon.start();
-            camion.start();
-            omnibus.start();
+            
         }
     }
 
@@ -97,14 +89,10 @@ public class CreadorDeVehiculos extends Thread {
        Vehiculo automovil  = new Vehiculo("A90", 2 ,"Corsa" , "Violeta" , false,pando,9010,100,01);
        Vehiculo automovil1  = new Vehiculo("A91", 2 ,"Audi" , "Gris" , true,pando,9019,0,02);
        Vehiculo automovil2  = new Vehiculo("A92", 2 ,"BMW" , "Negro" , false,pando,9020,0,03);
-       Vehiculo camion  = new Vehiculo("C90", 5 ,"Scania R620" , "Violeta" , false,pando,9080,50,04);
-	   Vehiculo camion1  = new Vehiculo("C91", 5 ,"Scania R620" , "Amarillo" , true,pando,9090,90,05);
             
        automovil.start();
 	   automovil1.start();
        automovil2.start();
-	   camion.start();
-       camion1.start();
             
         }
 	
@@ -122,18 +110,43 @@ public class CreadorDeVehiculos extends Thread {
             
         }
 	
-    // Caso 7 :
+    // Caso 6 :
 	// - Envio vehiculos prioritarios luego de un tiempo.
 	public void caso6() {
-        
-        Vehiculo ambulancia = new Vehiculo("Amb" + "30", 1, "Semm", "Blanco", false, pando, 1049999999, 0, 000000104);
+
+		Vehiculo ambulancia = new Vehiculo("Amb" + "30", 1, "Semm", "Blanco", false, pando, 1049999999, 0, 000000104);
 		Vehiculo bombero = new Vehiculo("Bomb" + "50", 1, "Bombero", "Rojo", true, pando, 10799999, 0, 000000102);
-        Vehiculo bombero1 = new Vehiculo("Bomb" + "50", 1, "Bombero", "Rojo", false, pando, 107999980, 0,000000006);
-        Vehiculo policia = new Vehiculo("Poli" + "20", 1, "Policia", "Azul", true, pando,10399999, 0, 000000103);
-        ambulancia.start();
+		Vehiculo bombero1 = new Vehiculo("Bomb" + "50", 1, "Bombero", "Rojo", false, pando, 107999980, 0, 000000006);
+		Vehiculo policia = new Vehiculo("Poli" + "20", 1, "Policia", "Azul", true, pando, 10399999, 0, 000000103);
+		ambulancia.start();
 		bombero.start();
-        bombero1.start();
-        policia.start();
+		bombero1.start();
+		policia.start();
+	}
+	
+	//Caso 7:
+    // - Envio camiones y omnibus
+    public void caso7() {
+        
+        for(int i=50; i <= 52; i++){
+            Integer key = i;
+            Vehiculo camion  = new Vehiculo("C"+key.toString(), 5 ,"Scania R620" , "Azul" , false,pando,96000000+i,1000,6000000+i);
+			Vehiculo omnibus = new Vehiculo("O" + key.toString(), 4, "BYD Electrico", "Negro", false, pando,95000000 + i, 700, 7000000 + i);
+            camion.start();
+		    omnibus.start();
+
+            }
+
+        for(int i=53; i <= 55; i++){
+            Integer key = i;
+            Vehiculo camion  = new Vehiculo("C"+key.toString(), 5 ,"Scania R620" , "Azul" , true,pando,96000000+i,1000,6000000+i);
+			Vehiculo omnibus = new Vehiculo("O" + key.toString(), 4, "BYD Electrico", "Negro", true, pando,95000000 + i, 700, 7000000 + i);
+            camion.start();
+		    omnibus.start();
+
+           }
+
+		
 	}
 	
 
@@ -154,7 +167,8 @@ public class CreadorDeVehiculos extends Thread {
 			e.printStackTrace();
 		}*/
 		//vehiculos con cosas ilegales
-		caso1();
+        caso2();
+        caso7();
          /*try{
 			   Thread.sleep(20000);
 			} catch (InterruptedException e) {
@@ -169,7 +183,7 @@ public class CreadorDeVehiculos extends Thread {
 			e.printStackTrace();
 			}
 		// Agrego vehiculos sin saldo en ambos sentidos
-		caso6();
+		//caso6();
         
         
     }

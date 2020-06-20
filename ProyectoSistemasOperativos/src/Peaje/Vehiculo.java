@@ -167,7 +167,7 @@ public class Vehiculo extends Thread {
 		carrilOptimo.getDisponible().decrementar();
 		///carrilOptimo.getSemListaEspera().decrementar();
 		if(carrilOptimo.entrarAlCarril(this)){
-			System.out.println("Vehiculo " + this.getId() + " entra al Carril " + carrilOptimo.getNumeroCarril());
+			System.out.println("Vehiculo " + this.getMatricula() + " entra al Carril " + carrilOptimo.getNumeroCarril());
 			// Logear en Vehiculo y Carril con clase Logger.
 		}
 		//carrilOptimo.getSemListaEspera().incrementa();
@@ -200,11 +200,11 @@ public class Vehiculo extends Thread {
 		//Pasa por el sensor que cuenta la cantidad de vehiculos circulando
 		if (this.getSentido()) {
 			peaje.haciaMontevideo.vehiculoDetectado();
-			System.out.println("pasa por el sensor hacia montevideo");
+			//System.out.println("pasa por el sensor hacia montevideo");
 		}
 		else {
 			peaje.haciaElEste.vehiculoDetectado();
-			System.out.println("pasa por el sensor hacie el este ");
+			//System.out.println("pasa por el sensor hacie el este ");
 		}
 		//Tiempo que demora en llegar a la altura del monitor
 		try{
