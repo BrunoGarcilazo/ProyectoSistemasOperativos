@@ -8,8 +8,6 @@ public class Monitor {
 	private Vector<Carril> carriles;
 	
 
-
-
 	public Monitor(boolean haciaMontevideo) {
 		this.haciaMontevideo = haciaMontevideo;
 	}
@@ -33,7 +31,7 @@ public class Monitor {
 				if (carril.getCabina() != null) {
 					if (this.haciaMontevideo == carril.getCabina().getSentido()) {
 						if (carril.getCabina().getHabilitada()) {
-							Carril car = buscarCarril(carril.getCabina().getID());
+							Carril car = buscarCarril(carril.getNumeroCarril());
 							System.out.println("Cabina numero: " + carril.getCabina().getID() + " HABILITADA " + "Con "
 									+ car.getEsperaDeAutos().size() + " autos");
 						} else {

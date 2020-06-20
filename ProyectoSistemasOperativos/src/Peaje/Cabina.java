@@ -82,27 +82,27 @@ public class Cabina extends Thread {
 
 								case 1: //Prioritario
 									pagoExitoso = this.cobrar(this.enCabina, 0);
-									Thread.sleep(500);
+									
 									break;
 
 								case 2: // Automovil
 									pagoExitoso = this.cobrar(this.enCabina, 115);
-									Thread.sleep(5000);
+									Thread.sleep(100);
 									break;
 
 								case 3: // Furgon
 									pagoExitoso = this.cobrar(this.enCabina, 130);
-									Thread.sleep(5500);
+									Thread.sleep(300);
 									break;
 
 								case 4: // Bus
 									pagoExitoso = this.cobrar(this.enCabina, 150);
-									Thread.sleep(8000);
+									Thread.sleep(500);
 									break;
 
 								case 5: //Camión
 									pagoExitoso = this.cobrar(this.enCabina, 180);
-									Thread.sleep(8000);
+									Thread.sleep(500);
 									break;
 								default:
 									System.out.println("UFO");

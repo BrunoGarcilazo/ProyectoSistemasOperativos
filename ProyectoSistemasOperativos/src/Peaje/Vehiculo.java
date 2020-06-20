@@ -203,7 +203,7 @@ public class Vehiculo extends Thread {
 		}
 		//Tiempo que demora en llegar a la altura del monitor
 		try{
-			Thread.sleep(3000);
+			Thread.sleep(10000);
 		}catch(InterruptedException e){
 			e.printStackTrace();
 		}	
