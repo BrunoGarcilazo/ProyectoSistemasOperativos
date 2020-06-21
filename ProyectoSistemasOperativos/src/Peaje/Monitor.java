@@ -24,7 +24,19 @@ public class Monitor {
 		return this.haciaMontevideo;
 	}
 
-	
+	public String imprimirMonitor(){
+		String salida = "|";
+		String tick =  "✔";
+		for(Carril c : carriles){
+			Integer cantidad = c.getEsperaDeAutos().size();
+			if(c.getCabina().getSentido()){		
+				salida += " " + tick + " " + cantidad.toString() + " |";
+			}else{
+				salida += " " + "X" + " " + cantidad.toString() + " |";
+			}
+		}
+		return salida;
+	}
 	public void imprimir() {
 		if (!carriles.isEmpty()){
 			for (Carril carril : carriles) {

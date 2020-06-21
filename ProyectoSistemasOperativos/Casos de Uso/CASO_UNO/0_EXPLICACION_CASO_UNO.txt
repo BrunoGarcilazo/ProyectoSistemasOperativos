@@ -1,0 +1,8 @@
+CASO DE USO 1 : TODOS LOS VEHICULOS MENOS PRIORITARIOS, EN CANTIDAD CONSIDERABLE, EN AMBOS SENTIDOS EQUITATIVAMENTE.
+
+- Se ve como se encienden todas las Cabinas debido a la cantidad de vehiculos detectados.
+- Se ve como (debido a que vienen en cantidades equitativas) se habilitan 5 Cabinas en cada sentido.
+- Se ve como los Vehiculos se distribuyen equitativamente en las Cabinas que encuentran disponibles ( logs de Cabinas )
+- Se ve como se realizan los cobros bien (logs de Clientes)
+- Una vez pasan los Vehiculos, se ve como en los Monitores la cantidad de Vehiculos va disminuyendo
+- Cuando pasan los Vehiculos, se van apagando Cabinas gradualmente hasta solo mantener las Cabinas 1 y 10 (minimas indispensables)

@@ -1,0 +1,11 @@
+EN LOS CASOS DE USO, SOMETEMOS A NUESTRO SISTEMA A SITUACIONES PUNTUALES PARA LUEGO VISUALIZAR SU RESPUESTA
+
+Por ejemplo: Muchos vehiculos llegando al Peaje por ambos sentidos.
+			 Muchos vehiculos llegando al Peaje por un solo sentido.
+			 Pocos vehiculos llegando al Peaje por ambos sentidos (y la cantidad de Cabinas encendidas - manejo energetico)
+			 etc.
+			 
+Los logs de Cabinas contienen un registro de que Vehiculo paso, hacia donde se dirige e incluso si el pago fue exitoso o no.
+Los logs de Caminera contienen "alertas" que el Peaje da, conteniendo la informacion de Vehiculos cuya informacion no este en regla.
+Los logs de Clientes contienen la informacion acerca de su pasaje por el Peaje, el costo, saldo restante o una alerta por informacion irregular.
+En la vida real, los logs de Clientes tambien son SMS enviados al numero telefonico del Cliente, asi como las alertas de Caminera pueden ser avisos por radio.

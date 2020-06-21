@@ -48,7 +48,7 @@ public class Sensor extends Thread{
                 this.cantidadVehiculosTemp = this.cantidadVehiculosTemp - 1 ;
             }
             try{
-                Thread.sleep(2000);
+                Thread.sleep(700);
             }catch(InterruptedException e){
                 e.printStackTrace();
             }

@@ -1,0 +1,8 @@
+CASO DE USO 3 : TODOS LOS VEHICULOS, EN GRAN CANTIDAD, TODOS HACIA EL ESTE.
+
+- Se ve como se encienden todas las Cabinas debido a la cantidad de vehiculos detectados.
+- Se ve como (debido a que vienen en una sola direccion) se habilitan la maxima cantidad de cabinas hacia el Este.
+- Se ve como los Vehiculos se distribuyen en las Cabinas que encuentran disponibles ( logs de Cabinas )
+- Se ve como se realizan los cobros bien (logs de Clientes)
+- Una vez pasan los Vehiculos, se ve como en los Monitores la cantidad de Vehiculos va disminuyendo
+- Cuando pasan los Vehiculos, se van apagando Cabinas gradualmente hasta solo mantener las Cabinas 1 y 10 (minimas indispensables)

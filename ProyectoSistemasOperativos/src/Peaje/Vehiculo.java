@@ -208,7 +208,7 @@ public class Vehiculo extends Thread {
 		}
 		//Tiempo que demora en llegar a la altura del monitor
 		try{
-			Thread.sleep(9000);
+			Thread.sleep(5000);
 		}catch(InterruptedException e){
 			e.printStackTrace();
 		}	
@@ -224,9 +224,9 @@ public class Vehiculo extends Thread {
 		
 		Carril carril = null;
 		if(haciaMontevideo){
-			carril = this.seleccionarCarrilHaciaMontevideo();
-		}else{
 			carril = this.seleccionarCarrilHaciaEste();
+		}else{
+			carril = this.seleccionarCarrilHaciaMontevideo();
 		}
 		if(carril != null)  {
 			this.moverseDeCarril(carril);

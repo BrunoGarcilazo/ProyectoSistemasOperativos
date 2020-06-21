@@ -67,10 +67,10 @@ public class Logger extends Thread {
     @Override
     public void run()  {
 	    try  {
-	    Thread.sleep(15000); // Exporta los datos cada 20s
+	    Thread.sleep(75000); // Exporta los datos cada 20s
 	    }  catch  (InterruptedException e){
 	        e.printStackTrace();
-        }
+        }   
         // Envia los datos de cada Cabina en archivos por separado.
         if(cabinaLogger){
 	        for (int i = 1; i <= 10; i++) {

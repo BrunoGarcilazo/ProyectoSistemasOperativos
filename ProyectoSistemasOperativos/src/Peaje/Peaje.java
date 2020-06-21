@@ -27,7 +27,19 @@ public class Peaje extends Thread {
 		crearCabinasYCarriles();
 	}
 
+	public String imprimirMonitorEste(){ // | X 23 | X 12 | X 17 | X 7 | X 12 | ✔ 12 | ✔ 15 | ✔ 17 | ✔ 21 | ✔ 42 |
+		System.out.println("----------------------------------------------------------------------");
+		System.out.println("----------------- MONITOR ESTE -----------------");
+		return this.monitorEste.imprimirMonitor();
+	}
+
+	public String imprimirMonitorOeste(){
+		System.out.println("----------------------------------------------------------------------");
+		System.out.println("----------------- MONITOR OESTE -----------------");
+		return this.monitorOeste.imprimirMonitor();
+	}
 	public Sensor getSensorHaciaMontevideo(){
+
 		return this.haciaMontevideo;
 	}
 
@@ -93,12 +105,12 @@ public class Peaje extends Thread {
 		this.carriles.add(carrilN10); //agrego el carril N10
 		this.cabinas.add(cabinaN10); // agrego la cabina N10
 		//Acondiciono Monitor Oeste (haciaMontevideo) 1,2,3,...10
-		this.monitorOeste.setCarriles(this.carriles);
+		this.monitorEste.setCarriles(this.carriles);
 
 		//Acondiciono Monitor Este (!haciaMontevideo) 10,9,8...1
 		Vector<Carril> aux = this.carriles;
 		Collections.reverse(aux);
-		this.monitorEste.setCarriles(aux);
+		this.monitorOeste.setCarriles(aux);
 
 	}
 	
@@ -116,7 +128,7 @@ public class Peaje extends Thread {
 			
 		for (Carril c : this.carriles) {
 			if((c.getCabina().getID()>= 2 && c.getCabina().getID()<= 9)){
-				if (c.getEsperaDeAutos().size() == 0 && c.getCabina().getEnCabina() == null && c.getCabina().getHabilitada()){
+				if (c.getEsperaDeAutos().size() == 0){ //&& c.getCabina().getEnCabina() == null 
 					c.getCabina().setHabilitada(false);
 					System.out.println("Se deshabilita la Cabina " + c.getCabina().getID());
 				}
@@ -125,7 +137,7 @@ public class Peaje extends Thread {
 	}
 	
 	private void controladorDeCabinas(){
-		
+			
 			int cantidadTotalVehiculos = this.haciaElEste.getCantidadTemp() + this.haciaMontevideo.getCantidadTemp();
 			if (cantidadTotalVehiculos != 0) {
 				int haciaMontevideoRatio = (this.haciaMontevideo.getCantidadTemp() * 100) / cantidadTotalVehiculos; // porcentaje de autos que van hacia mdeo
@@ -140,50 +152,53 @@ public class Peaje extends Thread {
 						this.invertirSentidoCarril(9, true); // hacia el oeste
 
 					} else if (haciaMontevideoRatio > 60) {
-						this.invertirSentidoCarril(9, true);
-						this.invertirSentidoCarril(8, true);
+						this.invertirSentidoCarril(9, false);
+						this.invertirSentidoCarril(8, false);
 					} else {
-						this.invertirSentidoCarril(2, false);
-						this.invertirSentidoCarril(3, false);
+						this.invertirSentidoCarril(2, true);
+						this.invertirSentidoCarril(3, true);
 					}
+					powerSavingMode();
 				} else if (cantidadTotalVehiculos >= 15 && cantidadTotalVehiculos <= 30) {
 					// Otorgo permiso para abrir 4 Cabinas 	
 					System.out.println("Se habilitan 4 cabinas nuevas");
 					if (haciaMontevideoRatio < 65 && haciaMontevideoRatio > 35) {
 						// Abro una Cabina para cada lado. Los Vehiculos vienen relativamente equitativos de ambos lados. 50 ± 15
-						this.invertirSentidoCarril(2, false); // hacia el este
-						this.invertirSentidoCarril(3, false);
-						this.invertirSentidoCarril(9, true); // hacia el oeste
-						this.invertirSentidoCarril(8, true);
+						this.invertirSentidoCarril(2, true); // hacia el este
+						this.invertirSentidoCarril(3, true);
+						this.invertirSentidoCarril(9, false); // hacia el oeste
+						this.invertirSentidoCarril(8, false);
 
 					} else if (haciaMontevideoRatio > 60) {
-						this.invertirSentidoCarril(9, true);
-						this.invertirSentidoCarril(8, true);
-						this.invertirSentidoCarril(7, true);
-						this.invertirSentidoCarril(6, true);
+						this.invertirSentidoCarril(9, false);
+						this.invertirSentidoCarril(8, false);
+						this.invertirSentidoCarril(7, false);
+						this.invertirSentidoCarril(6, false);
 					} else {
-						this.invertirSentidoCarril(2, false);
-						this.invertirSentidoCarril(3, false);
-						this.invertirSentidoCarril(4, false);
-						this.invertirSentidoCarril(5, false);
+						this.invertirSentidoCarril(2, true);
+						this.invertirSentidoCarril(3, true);
+						this.invertirSentidoCarril(4, true);
+						this.invertirSentidoCarril(5, true);
 					}
+					powerSavingMode();
 				} else if (cantidadTotalVehiculos > 30) {
 					// Caso de mucho trafico, habilito todas las Cabinas/Carriles
 					System.out.println("Se habilitan todas las cabinas");
 					int cabinasHaciaMontevideo = (haciaMontevideoRatio / 10) - 1;
 					int cabinasHaciaEste = (haciaEsteRatio / 10) - 1;
 
-					for (int i = 2; i <= (1 + cabinasHaciaEste); i++) {
+					for (int i = 2; i < (1 + cabinasHaciaEste); i++) {
 						this.invertirSentidoCarril(i, false);
 					}
 
-					for (int i = 9; i >= (9 - cabinasHaciaMontevideo); i--) {
+					for (int i = 9; i > (9 - cabinasHaciaMontevideo); i--) {
 						this.invertirSentidoCarril(i, true);
 					}
 
 				}
 				else{ // cuando no hay autos deshabilito todas menos 1 y 10
-					//powerSavingMode();
+					powerSavingMode();
+					
 				}
 			}
 	}
@@ -202,6 +217,18 @@ public class Peaje extends Thread {
 			cabina.setHabilitada(false);
 		}
 	}
+	/** 
+	 * Metodo que se ejecuta periodicamente para "destrancar vehiculos"
+	 */
+	private void correctivoCabinas(){
+		for(Carril c : carriles){
+			if(c.getEsperaDeAutos().size() != 0){
+				//c.getCabina().setEnCabina(null);
+				c.getCabina().setCabinaHabilitada(true);
+			}
+		}
+
+	}
 	/**
 	 *  Realiza el Thread.start() de 
 	 *  todas las Cabinas.
@@ -211,6 +238,8 @@ public class Peaje extends Thread {
 			c.start();
 		}
 	}
+
+
 	/**
 	 * Metodo que invierte el Sentido de un Carril
 	 * 1ro. Deshabilita entrada para nuevos Vehiculos
@@ -277,8 +306,10 @@ public class Peaje extends Thread {
 							carrilElegido.setHabilitado(false); // deshabilito el carril para que nadie se ponga adelante 
 							carrilElegido.getEsperaDeAutos().add(vehiculo); // unico vehiculo en lista de espera
 							c.setHabilitado(true); 
+							carrilElegido.getCabina().setCabinaHabilitada(true);
 							carrilElegido.setHabilitado(true); // habilito el carril para que siga con su forma normal
 							seMovioTrafico = true;
+
 						}
 						
 						if((c.getNumeroCarril() -1) == carrilElegido.getNumeroCarril() && c.getCabina().getSentido() == carrilElegido.getCabina().getSentido() && !seMovioTrafico){
@@ -288,7 +319,8 @@ public class Peaje extends Thread {
 							carrilElegido.setEsperaDeAutos(new Vector<Vehiculo>()); // vacio la lista de espera del carril x donde va a pasar el vehiculo prioritario
 							carrilElegido.setHabilitado(false); // deshabilito el carril para que nadie se ponga adelante 
 							carrilElegido.getEsperaDeAutos().add(vehiculo); // unico vehiculo en lista de espera
-							c.setHabilitado(true); 
+							c.setHabilitado(true); 		
+							carrilElegido.getCabina().setCabinaHabilitada(true);			
 							carrilElegido.setHabilitado(true); // habilito el carril para que siga con su forma normal
 							seMovioTrafico = true;
 						}
@@ -299,6 +331,7 @@ public class Peaje extends Thread {
 				 //mover hacia los costados.
 				}
 			}
+			correctivoCabinas();
 		}
 	}
 
@@ -326,26 +359,36 @@ public class Peaje extends Thread {
 	public void run() {
 		this.haciaElEste.start();
 		this.haciaMontevideo.start();
-		crearCabinasYCarriles(); // Crea las Cabinas.
+		//crearCabinasYCarriles(); // Crea las Cabinas.
 		startCabinas(); // Comienzan a "trabajar" todas las Cabinas.
 
 		while (true){
-		
+			System.out.println(this.imprimirMonitorEste());
+			System.out.println("----------------------------------------------------------------------");
+			System.out.println(this.imprimirMonitorOeste()); 
+			System.out.println("----------------------------------------------------------------------");
 			//System.out.println("Monitor hacia el Este");
 			//this.monitorEste.imprimir();
 
 			//System.out.println("Monitor hacia el Oeste");
 			//this.monitorOeste.imprimir();
-			powerSavingMode();
+			//powerSavingMode();
+			correctivoCabinas();
+			try{
+				Thread.sleep(2000);
+			}
+			catch (InterruptedException e) {
+					e.printStackTrace();
+			}
 			controladorDeCabinas();
 			try{
-				Thread.sleep(10000);
+				Thread.sleep(6000);
 			}
 			catch (InterruptedException e) {
 					e.printStackTrace();
 			}
 
-			powerSavingMode();
+			//powerSavingMode();
 			
 			
 		}

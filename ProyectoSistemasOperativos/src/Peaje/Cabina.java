@@ -79,7 +79,7 @@ public class Cabina extends Thread {
 						}										
 						if (this.enCabina != null && this.enCabina.getCobrado() == false){						
 							boolean pagoExitoso = false;
-							switch (this.enCabina.getTipoVehiculo()) {
+							switch (this.enCabina.getTipoVehiculo()){
 
 								case 1: //Prioritario
 									pagoExitoso = this.cobrar(this.enCabina, 0); 
