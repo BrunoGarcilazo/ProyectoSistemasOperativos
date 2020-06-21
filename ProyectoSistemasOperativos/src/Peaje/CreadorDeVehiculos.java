@@ -77,7 +77,7 @@ public class CreadorDeVehiculos extends Thread {
     // Caso 3:
 	// - Todos los tipos de vehiculos en gran cantidad, solo hacia el Este
 	public void caso3(){
-        for(int i=32; i <= 47; i++){           
+        for(int i=32; i <= 70; i++){           
             Vehiculo automovil  = new Vehiculo(obtenerMatriculaAuto(), 2 ,"Ford Fiesta" , "Blanco" , false,pando,99000000+i,500,getCedulaUnica());
             Vehiculo furgon  = new Vehiculo(obtenerMatriculaFurgon(), 3 ,"Hyundai H100" , "Rojo" , false,pando,94000000+i,600,getCedulaUnica());
             Vehiculo camion  = new Vehiculo(obtenerMatriculaCamion(), 5 ,"Scania R620" , "Azul" , false,pando,96000000+i,1000,getCedulaUnica());
@@ -166,6 +166,20 @@ public class CreadorDeVehiculos extends Thread {
         automovil.start();
     }
 
+    public void caso9(){
+        for(int i=32; i <= 47; i++){           
+            Vehiculo automovil  = new Vehiculo(obtenerMatriculaAuto(), 2 ,"Ford Fiesta" , "Blanco" , false,pando,99000000+i,500,getCedulaUnica());
+            Vehiculo furgon  = new Vehiculo(obtenerMatriculaFurgon(), 3 ,"Hyundai H100" , "Rojo" , false,pando,94000000+i,600,getCedulaUnica());
+            Vehiculo camion  = new Vehiculo(obtenerMatriculaCamion(), 5 ,"Scania R620" , "Azul" , false,pando,96000000+i,1000,getCedulaUnica());
+            Vehiculo omnibus = new Vehiculo(obtenerMatriculaBus(), 4, "BYD Electrico", "Negro", false, pando,95000000 + i, 700, getCedulaUnica());
+            
+            omnibus.start();
+            automovil.start();
+            furgon.start();
+            camion.start();
+            
+        }
+    }
     public String obtenerMatriculaAuto(){
         this.cantAuto = this.cantAuto + 1;
         Integer id = this.cantAuto;
@@ -220,12 +234,13 @@ public class CreadorDeVehiculos extends Thread {
     }
     @Override
 	public void run() {
-    // inicia el peaje uniformemente.
+    // inicia el peaje uniformemente.\
         this.pando.start();
-        caso3();
+
+        caso9(); // Todo tipo de Vehiculos desde el Este hacia Montevideo.
      
 			try{
-			   Thread.sleep(10000);
+			   Thread.sleep(1000);
 			} catch (InterruptedException e) {
 			e.printStackTrace();
             }

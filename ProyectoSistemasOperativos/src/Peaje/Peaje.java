@@ -159,7 +159,7 @@ public class Peaje extends Thread {
 						this.invertirSentidoCarril(3, true);
 					}
 					powerSavingMode();
-				} else if (cantidadTotalVehiculos >= 15 && cantidadTotalVehiculos <= 30) {
+				} else if (cantidadTotalVehiculos >= 15 && cantidadTotalVehiculos <= 30){
 					// Otorgo permiso para abrir 4 Cabinas 	
 					System.out.println("Se habilitan 4 cabinas nuevas");
 					if (haciaMontevideoRatio < 65 && haciaMontevideoRatio > 35) {
@@ -178,7 +178,7 @@ public class Peaje extends Thread {
 						this.invertirSentidoCarril(2, true);
 						this.invertirSentidoCarril(3, true);
 						this.invertirSentidoCarril(4, true);
-						this.invertirSentidoCarril(5, true);
+						this.invertirSentidoCarril(5, true );
 					}
 					powerSavingMode();
 				} else if (cantidadTotalVehiculos > 30) {
@@ -187,7 +187,7 @@ public class Peaje extends Thread {
 					int cabinasHaciaMontevideo = (haciaMontevideoRatio / 10) - 1;
 					int cabinasHaciaEste = (haciaEsteRatio / 10) - 1;
 
-					for (int i = 2; i < (1 + cabinasHaciaEste); i++) {
+					for (int i = 2; i < (1 + cabinasHaciaEste); i++){
 						this.invertirSentidoCarril(i, false);
 					}
 
@@ -367,12 +367,6 @@ public class Peaje extends Thread {
 			System.out.println("----------------------------------------------------------------------");
 			System.out.println(this.imprimirMonitorOeste()); 
 			System.out.println("----------------------------------------------------------------------");
-			//System.out.println("Monitor hacia el Este");
-			//this.monitorEste.imprimir();
-
-			//System.out.println("Monitor hacia el Oeste");
-			//this.monitorOeste.imprimir();
-			//powerSavingMode();
 			correctivoCabinas();
 			try{
 				Thread.sleep(2000);
